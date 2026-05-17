@@ -12,8 +12,8 @@ const TIMEOUT_MS = 60_000;
 
 const ScriptInputSchema = z.object({
   videoTitle: z.string().min(1).max(300),
-  format: z.string().min(1).max(100),
-  tone: z.string().min(1).max(100),
+  format: z.enum(["pas", "educational", "story", "listicle", "documentary", "review"]),
+  tone: z.enum(["conversational", "professional", "energetic", "calm", "humorous"]),
   targetLength: z.string().min(1).max(50),
   outline: z.string().max(5000).optional(),
   context: z.string().max(5000).optional(),
