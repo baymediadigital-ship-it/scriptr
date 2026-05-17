@@ -81,9 +81,10 @@ export default function IdeasPage() {
 
         // Try to parse partial JSON as it streams in
         try {
-          const trimmed = bufferRef.current.trim();
-          if (trimmed.endsWith("]")) {
-            const parsed = JSON.parse(trimmed);
+          const raw = bufferRef.current.trim();
+          const jsonStr = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+          if (jsonStr.endsWith("]")) {
+            const parsed = JSON.parse(jsonStr);
             setIdeas(parsed);
           }
         } catch {
@@ -91,9 +92,12 @@ export default function IdeasPage() {
         }
       }
 
-      // Final parse
+      // Final parse — strip markdown code fences if present
       try {
-        const parsed = JSON.parse(bufferRef.current.trim());
+        const raw = bufferRef.current.trim();
+        const jsonStr = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+        const match = jsonStr.match(/\[[\s\S]*\]/);
+        const parsed = JSON.parse(match ? match[0] : jsonStr);
         setIdeas(parsed);
       } catch {
         setError("Failed to parse ideas. Please try again.");
