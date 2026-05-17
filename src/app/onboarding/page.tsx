@@ -108,9 +108,7 @@ export default function OnboardingPage() {
               <div
                 className="w-2 h-2 rounded-full transition-all duration-300"
                 style={{
-                  background: step === s || step === "done"
-                    ? "#7c3aed"
-                    : (i === 0 && (step === "niche" || step === "done"))
+                  background: (step === s || step === "done" || (i === 0 && step === "niche"))
                     ? "#7c3aed"
                     : "rgba(255,255,255,0.15)",
                   transform: step === s ? "scale(1.4)" : "scale(1)",
