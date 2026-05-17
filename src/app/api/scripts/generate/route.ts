@@ -14,7 +14,7 @@ const ScriptInputSchema = z.object({
   videoTitle: z.string().min(1).max(300),
   format: z.enum(["pas", "educational", "story", "listicle", "documentary", "review"]),
   tone: z.enum(["conversational", "professional", "energetic", "calm", "humorous"]),
-  targetLength: z.string().min(1).max(50),
+  targetLength: z.enum(["short", "medium", "long"]),
   outline: z.string().max(5000).optional(),
   context: z.string().max(5000).optional(),
 });
