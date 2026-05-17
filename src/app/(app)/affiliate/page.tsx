@@ -1,7 +1,7 @@
 import { getUser } from "@/lib/supabase/user";
 import { createServiceClient } from "@/lib/supabase/service";
 import { Users, MousePointerClick, TrendingUp, DollarSign, Clock } from "lucide-react";
-import { CopyLinkButton } from "./copy-button";
+import { ReferralSection } from "./referral-section";
 
 export default async function AffiliatePage() {
   const user = await getUser();
@@ -41,8 +41,6 @@ export default async function AffiliatePage() {
       </div>
     );
   }
-
-  const referralLink = `https://www.getscriptr.io?ref=${affiliate.code}`;
 
   // Fetch stats in parallel
   const [{ count: totalClicks }, { data: conversions }] = await Promise.all([
@@ -126,24 +124,7 @@ export default async function AffiliatePage() {
       </div>
 
       {/* Referral link */}
-      <div
-        className="rounded-2xl p-5 space-y-3"
-        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
-      >
-        <p className="text-xs text-white/40 uppercase tracking-widest font-semibold">Your Referral Link</p>
-        <div className="flex items-center gap-3 flex-wrap">
-          <code
-            className="flex-1 min-w-0 px-4 py-2.5 rounded-xl text-sm font-mono truncate"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)", color: "#a78bfa" }}
-          >
-            {referralLink}
-          </code>
-          <CopyLinkButton link={referralLink} />
-        </div>
-        <p className="text-xs text-white/30">
-          Share this link. Anyone who signs up and pays becomes your referral.
-        </p>
-      </div>
+      <ReferralSection initialCode={affiliate.code} initialName={affiliate.name ?? ""} />
 
       {/* Stats */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
