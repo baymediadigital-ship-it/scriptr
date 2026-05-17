@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import Replicate from "replicate";
 
+// Force fresh env read on every request
+export const dynamic = "force-dynamic";
 const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
 
 async function runWithRetry(input: object, maxRetries = 4): Promise<unknown> {
