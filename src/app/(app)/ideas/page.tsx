@@ -95,12 +95,17 @@ export default function IdeasPage() {
       // Final parse — strip markdown code fences if present
       try {
         const raw = bufferRef.current.trim();
-        const jsonStr = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
-        const match = jsonStr.match(/\[[\s\S]*\]/);
-        const parsed = JSON.parse(match ? match[0] : jsonStr);
+        // Strip code fences
+        const stripped = raw.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+        // Extract JSON array regardless of surrounding text
+        const match = stripped.match(/\[[\s\S]*\]/);
+        if (!match) throw new Error(`No JSON array found. Raw: ${stripped.slice(0, 200)}`);
+        const parsed = JSON.parse(match[0]);
+        if (!Array.isArray(parsed)) throw new Error("Not an array");
         setIdeas(parsed);
-      } catch {
-        setError("Failed to parse ideas. Please try again.");
+      } catch (e: any) {
+        console.error("Ideas parse error:", e.message);
+        setError(`Failed to parse ideas: ${e.message}`);
       }
     } finally {
       setLoading(false);
