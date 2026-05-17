@@ -122,7 +122,7 @@ export default function IdeasPage() {
       <div>
         <h1 className="text-2xl font-bold">Idea Generator</h1>
         <p className="text-white/40 mt-1 text-sm">
-          50 proven video ideas for your niche — ready to script in minutes.
+          20 proven video ideas for your niche — ready to script in minutes.
         </p>
       </div>
 
@@ -159,7 +159,7 @@ export default function IdeasPage() {
         </div>
         <Button onClick={handleGenerate} disabled={loading || !niche.trim()} className="gap-2">
           <Sparkles className="h-4 w-4" />
-          {loading ? "Generating 50 ideas…" : "Generate Ideas"}
+          {loading ? "Generating 20 ideas…" : "Generate Ideas"}
         </Button>
       </div>
 
