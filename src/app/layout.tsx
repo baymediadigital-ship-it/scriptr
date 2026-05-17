@@ -21,16 +21,18 @@ export const metadata: Metadata = {
     apple: "/logo.png",
   },
   openGraph: {
-    title: "Scriptr — YouTube AI Script Writer",
-    description: "Find outlier videos, write AI scripts, track competitors — one toolkit for serious creators.",
+    title: "Scriptr — Find Viral Ideas & Write YouTube Scripts with AI",
+    description: "Find outlier videos performing 2–10x above average, generate full AI scripts, track competitors, and build your channel faster. Try free for 7 days.",
     url: "https://www.getscriptr.io",
     siteName: "Scriptr",
     type: "website",
+    images: [{ url: "https://www.getscriptr.io/opengraph-image", width: 1200, height: 630 }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Scriptr — YouTube AI Script Writer",
-    description: "Find outlier videos, write AI scripts, track competitors — one toolkit for serious creators.",
+    title: "Scriptr — Find Viral Ideas & Write YouTube Scripts with AI",
+    description: "Find outlier videos performing 2–10x above average, generate full AI scripts, track competitors, and build your channel faster. Try free for 7 days.",
+    images: ["https://www.getscriptr.io/opengraph-image"],
   },
 };
 
