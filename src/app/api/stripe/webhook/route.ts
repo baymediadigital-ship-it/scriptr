@@ -62,6 +62,53 @@ export async function POST(req: NextRequest) {
       await upsertSubscription(supabase, userId, subscription.customer as string, subscription);
       break;
     }
+
+    // invoice.payment_succeeded — record affiliate commissions
+    case "invoice.payment_succeeded": {
+      const invoice = event.data.object as Stripe.Invoice;
+      if (!invoice.amount_paid || invoice.amount_paid === 0) break;
+
+      // Resolve the supabase user_id from customer metadata
+      let userId: string | undefined;
+      if (invoice.customer) {
+        const customer = await stripe.customers.retrieve(invoice.customer as string) as Stripe.Customer;
+        userId = customer.metadata?.supabase_user_id;
+      }
+      if (!userId) break;
+
+      // Check if there's an affiliate code stored on the subscription row
+      const { data: subRow } = await supabase
+        .from("subscriptions")
+        .select("affiliate_code")
+        .eq("user_id", userId)
+        .single();
+
+      const affiliateCode = subRow?.affiliate_code;
+      if (!affiliateCode) break;
+
+      // Look up the affiliate
+      const { data: affiliate } = await supabase
+        .from("affiliates")
+        .select("id")
+        .eq("code", affiliateCode)
+        .eq("active", true)
+        .single();
+
+      if (!affiliate) break;
+
+      const commissionCents = Math.round(invoice.amount_paid * 0.30);
+
+      await supabase.from("affiliate_conversions").insert({
+        affiliate_id: affiliate.id,
+        referred_user_id: userId,
+        stripe_invoice_id: invoice.id,
+        amount_cents: invoice.amount_paid,
+        commission_cents: commissionCents,
+        paid_out: false,
+      });
+
+      break;
+    }
   }
 
   return NextResponse.json({ received: true });

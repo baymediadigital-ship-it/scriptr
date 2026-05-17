@@ -16,6 +16,7 @@ import {
   CalendarDays,
   MessageSquareText,
   Zap,
+  Handshake,
 } from "lucide-react";
 import { ScriptrLogo } from "@/components/ui/logo";
 
@@ -28,6 +29,7 @@ const navItems = [
   { href: "/competitors", icon: Users, label: "Competitors" },
   { href: "/research", icon: BookOpen, label: "Research" },
   { href: "/thumbnails", icon: ImageIcon, label: "Thumbnails" },
+  { href: "/affiliate", icon: Handshake, label: "Affiliate" },
 ];
 
 export function Sidebar({ isPro = false }: { isPro?: boolean }) {

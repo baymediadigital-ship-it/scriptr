@@ -2,12 +2,16 @@ import { NextRequest, NextResponse } from "next/server";
 import { getUser } from "@/lib/supabase/user";
 import { createClient } from "@/lib/supabase/server";
 import { stripe, PLANS, type BillingInterval } from "@/lib/stripe/client";
+import { createServiceClient } from "@/lib/supabase/service";
 
 export async function POST(req: NextRequest) {
   const user = await getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const { interval = "monthly" }: { interval?: BillingInterval } = await req.json().catch(() => ({}));
+
+  // Read affiliate ref_code from cookie
+  const refCode = req.cookies.get("ref_code")?.value ?? null;
 
   const supabase = await createClient();
 
@@ -22,9 +26,29 @@ export async function POST(req: NextRequest) {
   if (!customerId) {
     const customer = await stripe.customers.create({
       email: user.email!,
-      metadata: { supabase_user_id: user.id },
+      metadata: {
+        supabase_user_id: user.id,
+        ...(refCode ? { affiliate_code: refCode } : {}),
+      },
     });
     customerId = customer.id;
+  } else if (refCode) {
+    // Update existing customer metadata with affiliate code if not already set
+    const existing = await stripe.customers.retrieve(customerId) as import("stripe").default.Customer;
+    if (!existing.metadata?.affiliate_code) {
+      await stripe.customers.update(customerId, {
+        metadata: { ...existing.metadata, affiliate_code: refCode },
+      });
+    }
+  }
+
+  // Store affiliate_code on the subscription record so webhook can read it
+  if (refCode) {
+    const serviceSupabase = createServiceClient();
+    await serviceSupabase
+      .from("subscriptions")
+      .update({ affiliate_code: refCode })
+      .eq("user_id", user.id);
   }
 
   const priceId = interval === "yearly"
