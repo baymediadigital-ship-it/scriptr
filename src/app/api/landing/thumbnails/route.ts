@@ -25,7 +25,7 @@ async function resolveHandleToId(handle: string): Promise<string | null> {
 }
 
 function parseRSS(xml: string, fallbackChannel: string) {
-  const entries: { id: string; title: string; channel: string; thumbnail: string }[] = [];
+  const entries: { id: string; title: string; channel: string; thumbnail: string; fallback: string }[] = [];
   const entryMatches = xml.match(/<entry>[\s\S]*?<\/entry>/g) ?? [];
 
   for (const entry of entryMatches) {
