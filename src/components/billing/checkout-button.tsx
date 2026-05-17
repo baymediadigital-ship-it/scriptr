@@ -7,9 +7,10 @@ import type { BillingInterval } from "@/lib/stripe/client";
 interface Props {
   variant?: "default" | "card";
   interval?: BillingInterval;
+  className?: string;
 }
 
-export function CheckoutButton({ variant = "default", interval = "monthly" }: Props) {
+export function CheckoutButton({ variant = "default", interval = "monthly", className }: Props) {
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
@@ -32,7 +33,7 @@ export function CheckoutButton({ variant = "default", interval = "monthly" }: Pr
       <button
         onClick={handleClick}
         disabled={loading}
-        className="w-full py-2 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-50"
+        className={`w-full py-2 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-50${className ? ` ${className}` : ""}`}
         style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 20px rgba(124,58,237,0.3)" }}
       >
         {loading ? "Redirecting…" : "Start $5 trial"}
@@ -44,7 +45,7 @@ export function CheckoutButton({ variant = "default", interval = "monthly" }: Pr
     <button
       onClick={handleClick}
       disabled={loading}
-      className="flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-50"
+      className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-opacity disabled:opacity-50${className ? ` ${className}` : ""}`}
       style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 16px rgba(124,58,237,0.3)" }}
     >
       <Zap className="h-4 w-4" />
