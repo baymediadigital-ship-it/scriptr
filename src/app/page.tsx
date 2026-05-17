@@ -599,6 +599,7 @@ export default function LandingPage() {
         <div className="max-w-4xl mx-auto flex items-center justify-between flex-wrap gap-4">
           <ScriptrLogo />
           <div className="flex items-center gap-6 text-xs text-white/30">
+            <Link href="/faq" className="hover:text-white/60 transition-colors">FAQ</Link>
             <Link href="/auth/login" className="hover:text-white/60 transition-colors">Log in</Link>
             <Link href="/auth/signup" className="hover:text-white/60 transition-colors">Sign up</Link>
             <span>© {new Date().getFullYear()} Scriptr</span>

@@ -20,6 +20,18 @@ export const metadata: Metadata = {
     icon: "/logo.png",
     apple: "/logo.png",
   },
+  openGraph: {
+    title: "Scriptr — YouTube AI Script Writer",
+    description: "Find outlier videos, write AI scripts, track competitors — one toolkit for serious creators.",
+    url: "https://www.getscriptr.io",
+    siteName: "Scriptr",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Scriptr — YouTube AI Script Writer",
+    description: "Find outlier videos, write AI scripts, track competitors — one toolkit for serious creators.",
+  },
 };
 
 export default function RootLayout({
