@@ -3,7 +3,9 @@ import Replicate from "replicate";
 
 // Force fresh env read on every request
 export const dynamic = "force-dynamic";
-const replicate = new Replicate({ auth: process.env.REPLICATE_API_KEY });
+const replicate = new Replicate({
+  auth: process.env.REPLICATE_KEY ?? process.env.REPLICATE_API_KEY,
+});
 
 async function runWithRetry(input: object, maxRetries = 4): Promise<unknown> {
   let delay = 10_000; // start at 10s (Replicate free tier resets in ~9s)
