@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ScriptrLogo, ScriptrMark } from "@/components/ui/logo";
 import {
   TrendingUp, FileText, MessageSquareText, Users, Image, Sparkles,
-  ArrowRight, CheckCircle2, Zap, X,
+  ArrowRight, CheckCircle2, Zap, X, Check,
 } from "lucide-react";
 import { ThumbnailCarousel } from "@/components/landing/thumbnail-carousel";
 
@@ -458,6 +458,120 @@ export default function LandingPage() {
               </details>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── Pricing ─────────────────────────────────────────────────────── */}
+      <section className="px-6 py-24" style={{ borderTop: "1px solid rgba(255,255,255,0.04)" }}>
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12 space-y-3">
+            <h2 className="text-3xl font-bold" style={{ letterSpacing: "-0.03em" }}>
+              Simple pricing. Cancel anytime.
+            </h2>
+            <p className="text-white/40 text-sm max-w-md mx-auto">
+              Start any plan with a <span className="text-white/70 font-medium">$5 trial for 7 days</span> — cancel in the first 7 days and pay nothing more.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-2xl mx-auto">
+            {/* Monthly */}
+            <div
+              className="rounded-2xl p-6 space-y-5"
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.07)",
+              }}
+            >
+              <div>
+                <p className="text-xs text-white/35 uppercase tracking-widest font-semibold mb-2">Monthly</p>
+                <div className="flex items-end gap-1">
+                  <span className="text-3xl font-bold text-white">$29</span>
+                  <span className="text-white/35 text-sm mb-1">/month</span>
+                </div>
+                <p className="text-white/35 text-xs mt-1">$5 trial for 7 days, then $29/mo</p>
+              </div>
+              <ul className="space-y-2.5">
+                {[
+                  "Unlimited outlier searches",
+                  "Unlimited scripts",
+                  "Unlimited competitors",
+                  "Comment mining",
+                  "Idea generator",
+                  "Thumbnail studio",
+                  "AI viral breakdown",
+                  "Research assistant",
+                  "Priority support",
+                ].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-white/60">
+                    <Check className="h-4 w-4 text-violet-400 flex-shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link
+                href="/auth/signup"
+                className="block w-full py-2.5 rounded-xl text-sm font-semibold text-white text-center transition-all"
+                style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)", color: "#c4b5fd" }}
+              >
+                Start $5 trial
+              </Link>
+            </div>
+
+            {/* Annual — highlighted */}
+            <div
+              className="rounded-2xl p-6 space-y-5 relative overflow-hidden"
+              style={{
+                background: "rgba(124,58,237,0.08)",
+                border: "1px solid rgba(124,58,237,0.35)",
+                boxShadow: "0 0 40px rgba(124,58,237,0.12)",
+              }}
+            >
+              <div className="absolute top-0 right-0 w-32 h-32 rounded-full blur-3xl pointer-events-none"
+                style={{ background: "rgba(124,58,237,0.2)" }} />
+              <div className="relative">
+                <div className="flex items-center justify-between mb-2">
+                  <p className="text-xs text-violet-400 uppercase tracking-widest font-semibold">Annual</p>
+                  <span
+                    className="flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full"
+                    style={{ background: "rgba(124,58,237,0.2)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.3)" }}
+                  >
+                    Save $99
+                  </span>
+                </div>
+                <div className="flex items-end gap-1">
+                  <span className="text-3xl font-bold text-white">$249</span>
+                  <span className="text-white/35 text-sm mb-1">/year</span>
+                </div>
+                <p className="text-white/35 text-xs mt-1">$20.75/mo · $5 trial for 7 days, then $249/yr</p>
+              </div>
+              <ul className="space-y-2.5 relative">
+                {[
+                  "Everything in Monthly",
+                  "Team seats ($4.99/seat)",
+                  "Strategy call included",
+                  "Best value for serious creators",
+                ].map((f) => (
+                  <li key={f} className="flex items-center gap-2.5 text-sm text-white/75">
+                    <Check className="h-4 w-4 text-violet-400 flex-shrink-0" />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <div className="relative">
+                <Link
+                  href="/auth/signup"
+                  className="block w-full py-2.5 rounded-xl text-sm font-semibold text-white text-center transition-all"
+                  style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 20px rgba(124,58,237,0.3)" }}
+                >
+                  Start $5 trial
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          <p className="text-center text-xs text-white/25 mt-8">
+            Secure payment via Stripe · Cancel in the first 7 days for a full refund · No hidden fees
+          </p>
         </div>
       </section>
 
