@@ -16,6 +16,10 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Scriptr — YouTube AI Script Writer",
   description: "Find outlier videos, write AI scripts, track competitors, generate thumbnails.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
