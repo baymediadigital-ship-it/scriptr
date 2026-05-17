@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/service";
+import { createServiceClient as createClient } from "@/lib/supabase/service";
 
 // YouTube Data API v3 costs per operation:
 // channels.list (by id or handle): 1 unit
