@@ -193,7 +193,7 @@ function OutlierCard({ video, onScript, channelTitle }: { video: OutlierVideo; o
   );
 }
 
-function VideoCard({ video, onScript }: { video: OutlierVideo; onScript: (v: OutlierVideo) => void }) {
+function VideoCard({ video, onScript }: { video: OutlierVideo | import("@/types/youtube").YouTubeVideo; onScript: (v: OutlierVideo) => void }) {
   return (
     <div
       className="group flex gap-4 p-4 rounded-2xl transition-all duration-200 hover:border-white/10"
