@@ -62,7 +62,7 @@ export default function IdeasPage() {
       const res = await fetch("/api/ideas/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ niche, tone, count: 50 }),
+        body: JSON.stringify({ niche, tone, count: 20 }),
       });
 
       if (!res.ok) {

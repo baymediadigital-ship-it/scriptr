@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  const { niche, tone, count = 50 } = await req.json();
+  const { niche, tone, count = 20 } = await req.json();
   if (!niche) return new Response(JSON.stringify({ error: "Niche is required" }), { status: 400 });
 
   // Load voice profile if available
@@ -59,7 +59,7 @@ Return ONLY a JSON array in this exact format, no other text:
 
   const stream = await client.messages.stream({
     model: "claude-sonnet-4-6",
-    max_tokens: 4096,
+    max_tokens: 8000,
     messages: [{ role: "user", content: prompt }],
   });
 
