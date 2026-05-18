@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
   try {
     const result = await fal.subscribe("fal-ai/flux-pro/v1.1", {
       input: {
-        prompt: `YouTube thumbnail for video titled "${prompt}", person with shocked or excited expression, clean solid background, bold text space on left side, photorealistic, professional studio lighting, high contrast, 16:9`,
+        prompt: `${prompt}, photorealistic, professional photography, no text, no words, no letters, 16:9 aspect ratio, YouTube thumbnail`,
         num_images: 1,
         image_size: "landscape_16_9",
         output_format: "jpeg",
