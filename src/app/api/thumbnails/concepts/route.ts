@@ -10,59 +10,65 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify({ error: "videoTitle is required" }), { status: 400 });
   }
 
-  const prompt = `You are a world-class YouTube thumbnail strategist. You've studied over 100,000 viral thumbnails and know exactly what drives clicks in every niche.
+  const prompt = `You are a world-class YouTube thumbnail art director. You've studied 100,000+ viral thumbnails and know exactly what drives clicks in every niche.
 
 VIDEO TITLE: "${videoTitle}"
 ${description ? `CONTEXT: ${description}` : ""}
 ${tone ? `TONE: ${tone}` : ""}
 ${style ? `PREFERRED STYLE: ${style}` : ""}
 
-STEP 1 — ANALYZE THE TITLE:
-- What niche is this? (finance, fitness, tech, gaming, food, travel, etc.)
-- What emotion should the thumbnail trigger? (shock, curiosity, FOMO, inspiration, fear of missing out, etc.)
-- What's the core promise or payoff of the video?
-- Who is the target viewer?
+VISUAL STYLE RULES — every concept must follow these:
+- Background: near-black (#080808 to #111111) or very dark charcoal. Never white, never bright.
+- Lighting: dramatic studio lighting — single strong key light, deep shadows, rim lighting on edges
+- Text space: always leave the top-left or left third completely empty for text overlay
+- No text, letters, numbers, or words anywhere in the image
+- Photorealistic, ultra-sharp, cinematic quality
+- High contrast between subject and background
+- Colour accent: one bold accent colour (red, orange, yellow, cyan, or gold) against the dark background
 
-STEP 2 — GENERATE 4 THUMBNAIL CONCEPTS using 4 COMPLETELY DIFFERENT visual strategies:
+STEP 1 — ANALYSE THE TITLE:
+- Niche: identify the specific content category
+- Emotion: what feeling should stop the scroll? (shock, awe, curiosity, FOMO, dread)
+- Hero visual: what ONE object, person, or scene best represents the core idea?
 
-**Concept 1 — Face Reaction:** A person (neutral ethnicity, relatable) with an exaggerated but authentic reaction (shock, excitement, disbelief). Clean solid background. Space on left for text. Studio lighting.
+STEP 2 — GENERATE 4 CONCEPTS using 4 COMPLETELY DIFFERENT visual strategies:
 
-**Concept 2 — Visual Metaphor / Scene:** No face. A powerful scene, object, or visual metaphor that instantly communicates the video's core idea. Cinematic lighting. High contrast.
+**Concept 1 — Dramatic Face:** Close-up of a person (relatable, neutral ethnicity) with a powerful emotional expression (shock, disbelief, intense focus). Face occupies right 60% of frame. Dark background. Strong rim light on face. Top-left empty for text.
 
-**Concept 3 — Before/After or Contrast:** Split composition showing two contrasting states, transformations, or comparisons. Clear visual divide. Bold color contrast between the two sides.
+**Concept 2 — Hero Object / Scene:** No face. The single most powerful physical object or scene that represents the video topic. Dark studio background. Dramatic underlighting or spotlight. The object should feel larger-than-life. Think: money stacks, glowing laptops, food extreme close-up, car on dark floor, supplement bottles.
 
-**Concept 4 — Niche-specific formula:** Use the proven thumbnail formula that dominates THIS specific niche. (e.g. for finance: money stacks + graphs; for fitness: transformation body shot; for tech: glowing screens + hands; for food: extreme close-up of food)
+**Concept 3 — Cinematic Scene:** Wide or medium shot. Atmospheric, moody, cinematic. Dark environment with one strong light source (fire, neon, screen glow, spotlight). Tells a story in one frame. Subject in right two-thirds, text space top-left.
 
-For each concept, write an image generation prompt that is:
-- Extremely specific about composition, subject placement, expressions, lighting, colors
-- Photorealistic style (not illustrated, not cartoon)
-- Always 16:9 landscape
-- Always leaves clear space for text overlay (usually left or top-left third)
-- Never includes actual text/words in the image
+**Concept 4 — Bold Contrast / Split:** Two-panel split or stark before/after. Left panel dark with one colour accent, right panel dark with contrasting accent. Clean dividing line. Symmetrical composition. Both sides dark-backgrounded with bold coloured subjects.
 
-Format exactly like this (no deviations):
+For each concept write a fal.ai image generation prompt that is:
+- Minimum 50 words
+- Extremely specific: subject, pose, expression, exact lighting setup, exact background colour, camera angle, depth of field
+- Ends with: "dark background, dramatic studio lighting, photorealistic, 8k, no text"
+
+Format exactly like this:
 
 ### CONCEPT 1: [Name]
-**Image prompt:** [hyper-detailed fal.ai image generation prompt — minimum 40 words]
-**Text overlay:** [3-5 words max, all caps, punchy]
-**Colors:** [#hex1, #hex2, #hex3]
-**Why it works:** [one specific sentence about the psychological trigger]
+**Image prompt:** [50+ word prompt ending with "dark background, dramatic studio lighting, photorealistic, 8k, no text"]
+**Text overlay:** [3-5 words, all caps]
+**Colors:** [#hex1, #hex2]
+**Why it works:** [one sentence on the psychological trigger]
 
 ### CONCEPT 2: [Name]
-**Image prompt:** [hyper-detailed prompt]
-**Text overlay:** [3-5 words]
+**Image prompt:** [50+ word prompt]
+**Text overlay:** [3-5 words, all caps]
 **Colors:** [#hex1, #hex2]
 **Why it works:** [one sentence]
 
 ### CONCEPT 3: [Name]
-**Image prompt:** [hyper-detailed prompt]
-**Text overlay:** [3-5 words]
+**Image prompt:** [50+ word prompt]
+**Text overlay:** [3-5 words, all caps]
 **Colors:** [#hex1, #hex2]
 **Why it works:** [one sentence]
 
 ### CONCEPT 4: [Name]
-**Image prompt:** [hyper-detailed prompt]
-**Text overlay:** [3-5 words]
+**Image prompt:** [50+ word prompt]
+**Text overlay:** [3-5 words, all caps]
 **Colors:** [#hex1, #hex2]
 **Why it works:** [one sentence]`;
 
