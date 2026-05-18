@@ -66,6 +66,24 @@ function parseConcepts(raw: string): Concept[] {
   }).filter((c) => c.imagePrompt);
 }
 
+async function downloadImage(url: string, name: string) {
+  try {
+    const res = await fetch(url);
+    const blob = await res.blob();
+    const ext = blob.type.includes("png") ? "png" : "jpg";
+    const objectUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = objectUrl;
+    a.download = `${name.toLowerCase().replace(/\s+/g, "-")}.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(objectUrl);
+  } catch {
+    window.open(url, "_blank");
+  }
+}
+
 function ThumbnailCard({ item, index, onRegenerate }: {
   item: GeneratedImage;
   index: number;
@@ -127,17 +145,14 @@ function ThumbnailCard({ item, index, onRegenerate }: {
 
         <div className="flex gap-2 pt-1">
           {item.url && (
-            <a
-              href={item.url}
-              download="thumbnail.webp"
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => downloadImage(item.url!, item.concept.name)}
               className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-white cursor-pointer transition-all"
               style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 16px rgba(124,58,237,0.25)" }}
             >
               <Download className="h-3.5 w-3.5" />
               Download
-            </a>
+            </button>
           )}
           <button
             onClick={() => onRegenerate(index)}
