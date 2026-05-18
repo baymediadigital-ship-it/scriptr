@@ -9,6 +9,7 @@ export type Subscription = {
   cancelAtPeriodEnd: boolean;
   stripeCustomerId: string | null;
   stripeSubscriptionId: string | null;
+  isLegacy: boolean;
 };
 
 export const getSubscription = cache(async (userId: string): Promise<Subscription> => {
@@ -37,6 +38,7 @@ export const getSubscription = cache(async (userId: string): Promise<Subscriptio
       cancelAtPeriodEnd: false,
       stripeCustomerId: null,
       stripeSubscriptionId: null,
+      isLegacy: false,
     };
   }
 
@@ -47,6 +49,7 @@ export const getSubscription = cache(async (userId: string): Promise<Subscriptio
     cancelAtPeriodEnd: data.cancel_at_period_end ?? false,
     stripeCustomerId: data.stripe_customer_id,
     stripeSubscriptionId: data.stripe_subscription_id,
+    isLegacy: data.is_legacy ?? false,
   };
 });
 

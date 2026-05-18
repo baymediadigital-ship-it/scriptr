@@ -4,6 +4,14 @@ export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2026-04-22.dahlia",
 });
 
+// When raising prices, create a new $39/mo price in Stripe and set
+// STRIPE_PRO_MONTHLY_V2_PRICE_ID in Vercel env vars.
+// New signups will use V2 automatically. Existing users stay on V1 forever.
+const MONTHLY_PRICE_ID = process.env.STRIPE_PRO_MONTHLY_V2_PRICE_ID
+  || process.env.STRIPE_PRO_MONTHLY_PRICE_ID!;
+
+const MONTHLY_PRICE = process.env.STRIPE_PRO_MONTHLY_V2_PRICE_ID ? 39 : 29;
+
 export const PLANS = {
   free: {
     name: "Free",
@@ -20,8 +28,11 @@ export const PLANS = {
     trialPrice: 5,
     trialPriceId: process.env.STRIPE_TRIAL_PRICE_ID!,
     monthly: {
-      price: 29,
-      priceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
+      price: MONTHLY_PRICE,
+      priceId: MONTHLY_PRICE_ID,
+      // Legacy price — always $29, never changes for existing users
+      legacyPriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
+      legacyPrice: 29,
     },
     yearly: {
       price: 249,

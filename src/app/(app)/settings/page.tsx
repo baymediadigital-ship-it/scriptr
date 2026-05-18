@@ -7,7 +7,7 @@ import { PortalButton } from "@/components/billing/portal-button";
 import { PlanToggle } from "@/components/billing/plan-toggle";
 import { VoiceProfile } from "@/components/settings/voice-profile";
 import { TeamMembers } from "@/components/settings/team-members";
-import { Check, Crown } from "lucide-react";
+import { Check, Crown, Lock } from "lucide-react";
 
 export default async function SettingsPage({
   searchParams,
@@ -54,6 +54,15 @@ export default async function SettingsPage({
                   style={{ background: "rgba(124,58,237,0.2)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.3)" }}
                 >
                   Active
+                </span>
+              )}
+              {subscription.isLegacy && (
+                <span
+                  className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded-full"
+                  style={{ background: "rgba(16,185,129,0.15)", color: "#34d399", border: "1px solid rgba(16,185,129,0.3)" }}
+                >
+                  <Lock className="h-2.5 w-2.5" />
+                  Legacy — $29/mo locked in forever
                 </span>
               )}
             </div>

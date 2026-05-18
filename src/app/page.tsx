@@ -5,6 +5,7 @@ import {
   ArrowRight, CheckCircle2, Zap, X, Check,
 } from "lucide-react";
 import { ThumbnailCarousel } from "@/components/landing/thumbnail-carousel";
+import { PriceIncreaseBanner } from "@/components/landing/price-increase-banner";
 
 const FEATURES = [
   {
@@ -70,6 +71,11 @@ const COMPARISON_ROWS = [
 export default function LandingPage() {
   return (
     <div className="min-h-screen" style={{ background: "#08080f" }}>
+
+      {/* ── Price increase banner (only shown when env var is set) ───────── */}
+      {process.env.NEXT_PUBLIC_PRICE_INCREASE_DATE && (
+        <PriceIncreaseBanner dateStr={process.env.NEXT_PUBLIC_PRICE_INCREASE_DATE} />
+      )}
 
       {/* ── Nav ─────────────────────────────────────────────────────────── */}
       <nav className="fixed top-0 inset-x-0 z-50 flex items-center justify-between px-6 py-4"

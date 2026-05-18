@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Check, CheckCircle2, Zap, Star } from "lucide-react";
 import { ScriptrMark } from "@/components/ui/logo";
+import { PriceIncreaseBanner } from "@/components/landing/price-increase-banner";
 
 export const metadata = {
   title: "Scriptr — Write Your Next YouTube Script in 60 Seconds",
@@ -25,6 +26,11 @@ const FEATURES = [
 export default function LandingPageAd() {
   return (
     <div className="min-h-screen" style={{ background: "#08080f" }}>
+
+      {/* ── Price increase banner ──────────────────────────────────────── */}
+      {process.env.NEXT_PUBLIC_PRICE_INCREASE_DATE && (
+        <PriceIncreaseBanner dateStr={process.env.NEXT_PUBLIC_PRICE_INCREASE_DATE} />
+      )}
 
       {/* ── Minimal nav — no escape links ─────────────────────────────── */}
       <nav className="flex items-center justify-between px-6 py-4 max-w-4xl mx-auto">

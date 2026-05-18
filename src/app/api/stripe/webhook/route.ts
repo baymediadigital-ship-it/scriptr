@@ -122,16 +122,23 @@ async function upsertSubscription(
 ) {
   const plan = ["active", "trialing"].includes(subscription.status) ? "pro" : "free";
   const periodEnd = subscription.items.data[0]?.current_period_end;
+  const priceId = subscription.items.data[0]?.price?.id ?? null;
+
+  // A user is legacy if they're on the original $29 price (not the V2 price)
+  const legacyPriceId = process.env.STRIPE_PRO_MONTHLY_PRICE_ID;
+  const isLegacy = plan === "pro" && priceId === legacyPriceId;
 
   await supabase.from("subscriptions").upsert(
     {
       user_id: userId,
       stripe_customer_id: customerId,
       stripe_subscription_id: subscription.id,
+      stripe_price_id: priceId,
       plan,
       status: subscription.status,
       current_period_end: periodEnd ? new Date(periodEnd * 1000).toISOString() : null,
       cancel_at_period_end: subscription.cancel_at_period_end,
+      is_legacy: isLegacy,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "user_id" }
