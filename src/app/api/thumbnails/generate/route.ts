@@ -1,28 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Replicate from "replicate";
+import { fal } from "@fal-ai/client";
 
-// Force fresh env read on every request
 export const dynamic = "force-dynamic";
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_KEY ?? process.env.REPLICATE_API_KEY,
-});
-
-async function runWithRetry(input: object, maxRetries = 4): Promise<unknown> {
-  let delay = 10_000; // start at 10s (Replicate free tier resets in ~9s)
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      return await replicate.run("black-forest-labs/flux-schnell", { input });
-    } catch (err: any) {
-      const is429 = err?.response?.status === 429 || err?.message?.includes("429") || err?.message?.includes("throttled");
-      if (is429 && attempt < maxRetries) {
-        await new Promise((r) => setTimeout(r, delay));
-        delay = Math.min(delay * 1.5, 30_000);
-        continue;
-      }
-      throw err;
-    }
-  }
-}
 
 export async function POST(req: NextRequest) {
   const { prompt } = await req.json();
@@ -31,25 +10,34 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "prompt is required" }, { status: 400 });
   }
 
+  const apiKey = process.env.FAL_API_KEY;
+  if (!apiKey) {
+    return NextResponse.json({ error: "FAL_API_KEY not configured" }, { status: 500 });
+  }
+
+  fal.config({ credentials: apiKey });
+
   try {
-    const output = await runWithRetry({
-      prompt: `YouTube thumbnail, ${prompt}, professional photography, high contrast, vibrant colors, 16:9 aspect ratio`,
-      num_outputs: 1,
-      aspect_ratio: "16:9",
-      output_format: "webp",
-      output_quality: 90,
+    const result = await fal.subscribe("fal-ai/flux-pro/v1.1", {
+      input: {
+        prompt: `YouTube thumbnail, ${prompt}, professional photography, high contrast, vibrant colors, bold composition, 16:9 aspect ratio`,
+        num_images: 1,
+        image_size: "landscape_16_9",
+        output_format: "jpeg",
+        safety_tolerance: "5",
+      },
     });
 
-    const imageUrl = Array.isArray(output) ? output[0] : output;
-    return NextResponse.json({ url: String(imageUrl) });
-  } catch (err: any) {
-    const is429 = err?.response?.status === 429 || err?.message?.includes("429") || err?.message?.includes("throttled");
-    if (is429) {
-      return NextResponse.json(
-        { error: "Replicate rate limit hit. Add a payment method at replicate.com to remove limits, or wait a minute and try again." },
-        { status: 429 }
-      );
+    const images = (result.data as any)?.images;
+    const imageUrl = Array.isArray(images) ? images[0]?.url : null;
+
+    if (!imageUrl) {
+      return NextResponse.json({ error: "No image returned from fal.ai" }, { status: 500 });
     }
-    return NextResponse.json({ error: err.message }, { status: 500 });
+
+    return NextResponse.json({ url: imageUrl });
+  } catch (err: any) {
+    console.error("fal.ai error:", err);
+    return NextResponse.json({ error: err.message ?? "Image generation failed" }, { status: 500 });
   }
 }
