@@ -17,12 +17,14 @@ import {
   MessageSquareText,
   Zap,
   Handshake,
+  Shuffle,
 } from "lucide-react";
 import { ScriptrLogo } from "@/components/ui/logo";
 
 const navItems = [
   { href: "/dashboard", icon: LayoutDashboard, label: "Dashboard" },
   { href: "/ideas", icon: Lightbulb, label: "Ideas" },
+  { href: "/format-transfer", icon: Shuffle, label: "Format Transfer" },
   { href: "/outliers", icon: TrendingUp, label: "Outliers" },
   { href: "/comments", icon: MessageSquareText, label: "Comment Mining" },
   { href: "/scripts", icon: FileText, label: "Scripts" },
