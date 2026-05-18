@@ -18,6 +18,7 @@ import {
   Zap,
   Handshake,
   Shuffle,
+  DollarSign,
 } from "lucide-react";
 import { ScriptrLogo } from "@/components/ui/logo";
 
@@ -91,19 +92,25 @@ export function Sidebar({ isPro = false }: { isPro?: boolean }) {
           <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20 px-3 mb-2">
             Coming soon
           </p>
-          <div
-            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/25 cursor-default select-none"
-            style={{ background: "transparent", border: "1px solid transparent" }}
-          >
-            <Shuffle className="h-4 w-4 flex-shrink-0 text-white/20" />
-            Format Transfer
-            <span
-              className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-              style={{ background: "rgba(124,58,237,0.12)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.2)" }}
+          {[
+            { icon: Shuffle, label: "Format Transfer" },
+            { icon: DollarSign, label: "RPM Predictor" },
+          ].map(({ icon: Icon, label }) => (
+            <div
+              key={label}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/25 cursor-default select-none"
+              style={{ background: "transparent", border: "1px solid transparent" }}
             >
-              Soon
-            </span>
-          </div>
+              <Icon className="h-4 w-4 flex-shrink-0 text-white/20" />
+              {label}
+              <span
+                className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+                style={{ background: "rgba(124,58,237,0.12)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.2)" }}
+              >
+                Soon
+              </span>
+            </div>
+          ))}
         </div>
 
         {/* Community section */}
