@@ -338,29 +338,29 @@ export default function ScriptsPage() {
                 <TabsContent value="formatted" className="space-y-6">
                   {parsed.title && (
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Title</p>
-                      <p className="text-lg font-bold">{parsed.title}</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-white/30 mb-1">Title</p>
+                      <p className="text-lg font-bold text-white/90">{parsed.title}</p>
                     </div>
                   )}
                   {parsed.hook && (
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Hook (0:00–0:15)</p>
-                      <div className="bg-yellow-50 dark:bg-yellow-950/20 border border-yellow-200 dark:border-yellow-800 rounded-md p-4">
-                        <p className="text-sm whitespace-pre-wrap">{parsed.hook}</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-white/30 mb-1">Hook (0:00–0:15)</p>
+                      <div className="rounded-xl p-4" style={{ background: "rgba(251,191,36,0.06)", border: "1px solid rgba(251,191,36,0.2)" }}>
+                        <p className="text-sm whitespace-pre-wrap text-white/80">{parsed.hook}</p>
                       </div>
                     </div>
                   )}
                   {parsed.body && (
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Body</p>
-                      <p className="text-sm whitespace-pre-wrap leading-relaxed">{parsed.body}</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-white/30 mb-1">Body</p>
+                      <p className="text-sm whitespace-pre-wrap leading-relaxed text-white/70">{parsed.body}</p>
                     </div>
                   )}
                   {parsed.cta && (
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Call to Action</p>
-                      <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-md p-4">
-                        <p className="text-sm whitespace-pre-wrap">{parsed.cta}</p>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-white/30 mb-1">Call to Action</p>
+                      <div className="rounded-xl p-4" style={{ background: "rgba(96,165,250,0.06)", border: "1px solid rgba(96,165,250,0.2)" }}>
+                        <p className="text-sm whitespace-pre-wrap text-white/80">{parsed.cta}</p>
                       </div>
                     </div>
                   )}

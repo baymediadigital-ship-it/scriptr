@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { MessageSquareText, TrendingUp, HelpCircle, Users, Quote, Loader2, ArrowRight, FileText } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -103,6 +103,8 @@ export default function CommentsPage() {
   const progressRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
   const [videoMeta, setVideoMeta] = useState<{ title: string; channel: string } | null>(null);
+
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   async function analyze() {
     const id = extractVideoId(url);

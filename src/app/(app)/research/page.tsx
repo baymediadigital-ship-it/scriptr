@@ -154,8 +154,8 @@ export default function ResearchPage() {
     <div className="max-w-5xl mx-auto space-y-6">
       <div>
         <h1 className="text-2xl font-bold">Research Assistant</h1>
-        <p className="text-muted-foreground mt-1">
-          Ingest YouTube transcripts, articles, and notes — then ask questions to generate script context.
+        <p className="text-white/40 mt-1 text-sm">
+          Ingest YouTube transcripts, articles, and notes — then ask questions to build script context.
         </p>
       </div>
 

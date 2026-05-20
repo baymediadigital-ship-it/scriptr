@@ -1,8 +1,16 @@
 import { getUser } from "@/lib/supabase/user";
-import { TrendingUp, FileText, Users, BookOpen, ImageIcon, ArrowRight } from "lucide-react";
+import { TrendingUp, FileText, Users, BookOpen, ImageIcon, ArrowRight, Lightbulb, MessageSquareText } from "lucide-react";
 import Link from "next/link";
 
 const quickLinks = [
+  {
+    href: "/ideas",
+    icon: Lightbulb,
+    title: "Idea Generator",
+    description: "20 proven video ideas for your niche — ready to script",
+    gradient: "from-yellow-500/20 to-amber-500/10",
+    iconColor: "text-yellow-400",
+  },
   {
     href: "/outliers",
     icon: TrendingUp,
@@ -20,6 +28,14 @@ const quickLinks = [
     iconColor: "text-violet-400",
   },
   {
+    href: "/comments",
+    icon: MessageSquareText,
+    title: "Comment Mining",
+    description: "Find what audiences love, hate, and want to see next",
+    gradient: "from-pink-500/20 to-rose-500/10",
+    iconColor: "text-pink-400",
+  },
+  {
     href: "/competitors",
     icon: Users,
     title: "Competitors",
@@ -28,26 +44,25 @@ const quickLinks = [
     iconColor: "text-blue-400",
   },
   {
-    href: "/research",
-    icon: BookOpen,
-    title: "Research",
-    description: "Turn videos, PDFs, and articles into script context",
-    gradient: "from-emerald-500/20 to-teal-500/10",
-    iconColor: "text-emerald-400",
-  },
-  {
     href: "/thumbnails",
     icon: ImageIcon,
-    title: "Thumbnails",
+    title: "Thumbnail Studio",
     description: "Generate AI thumbnail concepts and images instantly",
-    gradient: "from-pink-500/20 to-rose-500/10",
-    iconColor: "text-pink-400",
+    gradient: "from-emerald-500/20 to-teal-500/10",
+    iconColor: "text-emerald-400",
   },
 ];
 
 export default async function DashboardPage() {
   const user = await getUser();
-  const firstName = user?.email?.split("@")[0] ?? "there";
+  // Extract a readable first name: take part before first dot/+/_, strip trailing digits, capitalise
+  function toFirstName(email: string | undefined): string {
+    if (!email) return "there";
+    const prefix = email.split("@")[0].split(/[.+_]/)[0].replace(/\d+$/, "");
+    if (!prefix) return "there";
+    return prefix.charAt(0).toUpperCase() + prefix.slice(1);
+  }
+  const firstName = toFirstName(user?.email);
 
   return (
     <div className="max-w-4xl mx-auto space-y-10 py-2 animate-fade-up">
@@ -110,9 +125,9 @@ export default async function DashboardPage() {
         <p className="text-sm font-semibold text-white/70 mb-4">Getting started</p>
         <div className="space-y-4">
           {[
-            { step: 1, text: <>Go to <Link href="/outliers" className="text-violet-400 hover:text-violet-300 font-medium">Outlier Detector</Link> and enter a YouTube channel handle to find their top-performing videos.</> },
-            { step: 2, text: <>Pick an outlier video and open <Link href="/scripts" className="text-violet-400 hover:text-violet-300 font-medium">Script Writer</Link> to generate a full video script.</> },
-            { step: 3, text: <>Add channels to <Link href="/competitors" className="text-violet-400 hover:text-violet-300 font-medium">Competitors</Link> — Scriptr monitors them automatically every 6 hours.</> },
+            { step: 1, text: <>Use <Link href="/ideas" className="text-violet-400 hover:text-violet-300 font-medium">Idea Generator</Link> to get 20 proven video ideas for your niche in seconds.</> },
+            { step: 2, text: <>Go to <Link href="/outliers" className="text-violet-400 hover:text-violet-300 font-medium">Outlier Detector</Link> — enter any channel handle to find their viral videos.</> },
+            { step: 3, text: <>Pick a winner and hit <strong className="text-white/70">Script it</strong> to generate a full script, then jump to <Link href="/thumbnails" className="text-violet-400 hover:text-violet-300 font-medium">Thumbnail Studio</Link>.</> },
           ].map(({ step, text }) => (
             <div key={step} className="flex items-start gap-3">
               <span

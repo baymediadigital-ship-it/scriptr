@@ -176,13 +176,15 @@ export function Sidebar({ isPro = false }: { isPro?: boolean }) {
           style={pathname === "/settings" ? {
             background: "rgba(124, 58, 237, 0.15)",
             border: "1px solid rgba(124, 58, 237, 0.25)",
+            boxShadow: "0 0 16px rgba(124, 58, 237, 0.1)",
           } : {
             background: "transparent",
             border: "1px solid transparent",
           }}
         >
-          <Settings className="h-4 w-4 flex-shrink-0 text-white/35 group-hover:text-white/60" />
+          <Settings className={cn("h-4 w-4 flex-shrink-0 transition-colors", pathname === "/settings" ? "text-violet-400" : "text-white/35 group-hover:text-white/60")} />
           Settings
+          {pathname === "/settings" && <span className="ml-auto w-1.5 h-1.5 rounded-full bg-violet-400" />}
         </Link>
       </div>
     </aside>

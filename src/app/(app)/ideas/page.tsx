@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,6 +45,7 @@ const VIEW_LABELS: Record<string, string> = {
 };
 
 export default function IdeasPage() {
+  const router = useRouter();
   const [niche, setNiche] = useState("");
   const [tone, setTone] = useState("engaging");
   const [ideas, setIdeas] = useState<Idea[]>([]);
@@ -114,7 +116,7 @@ export default function IdeasPage() {
 
   function useIdea(idea: Idea) {
     const params = new URLSearchParams({ videoTitle: idea.title });
-    window.location.href = `/scripts?${params.toString()}`;
+    router.push(`/scripts?${params.toString()}`);
   }
 
   return (

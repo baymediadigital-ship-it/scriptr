@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -55,6 +55,8 @@ function OutlierCard({ video, onScript, channelTitle }: { video: OutlierVideo; o
   const accRef = useRef("");
   const progressRef = useRef<HTMLDivElement>(null);
   const rafRef = useRef<number>(0);
+
+  useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
   async function fetchBreakdown() {
     if (breakdown) { setShowBreakdown((v) => !v); return; }
