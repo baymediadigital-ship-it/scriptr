@@ -4,6 +4,7 @@ import { getUser } from "@/lib/supabase/user";
 import { getSubscription, isPro, getLimits } from "@/lib/billing/subscription";
 import { getUsage, incrementUsage } from "@/lib/billing/usage";
 import { createClient } from "@/lib/supabase/server";
+import { frameworksAsPromptBlock } from "@/lib/youtube/title-frameworks";
 
 const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -40,11 +41,14 @@ export async function POST(req: NextRequest) {
 
   const prompt = `You are a YouTube strategist. Generate exactly ${count} proven video ideas for the "${niche}" niche.
 
-Each idea must be:
-- Specific, clickable, and based on what actually gets views in this niche
-- Varied across formats: tutorials, stories, lists, hot takes, case studies, reactions
-- Optimized for search AND browse (mix of SEO titles and curiosity-gap titles)
-${tone ? `- Tone: ${tone}` : ""}${voiceContext}
+${frameworksAsPromptBlock()}
+
+INSTRUCTIONS:
+- Pick the most powerful frameworks from the list above and apply them to specific, real topics within the "${niche}" niche
+- Replace X/Y/Z with concrete, niche-relevant subjects — never leave placeholders
+- Spread across ALL 5 framework categories so there's variety in tone and psychological trigger
+- Each title should feel native to "${niche}" — not forced or generic
+- Tone: ${tone || "engaging"}${voiceContext}
 
 Return ONLY a JSON array in this exact format, no other text:
 [

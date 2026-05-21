@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
+import { frameworksAsPromptBlock } from "@/lib/youtube/title-frameworks";
 
 export const dynamic = "force-dynamic";
 
@@ -14,20 +15,28 @@ export async function POST(req: NextRequest) {
 
   const prompt = `You are an expert YouTube strategist who specialises in format transfer — taking title/video formulas that perform exceptionally well in one niche and adapting them to a different niche.
 
-VIRAL TITLE: "${viralTitle}"
+${frameworksAsPromptBlock()}
+
+---
+
+VIRAL TITLE TO ANALYSE: "${viralTitle}"
 ${sourceNiche ? `SOURCE NICHE: ${sourceNiche}` : ""}
 TARGET NICHE: ${targetNiche}
 
 Your task:
-1. Deeply analyse the title formula — identify the psychological trigger (curiosity, FOMO, contrarian, insider knowledge, transformation, challenge, etc.), the structural pattern, and what makes it work.
-2. Generate 10 adapted title variations for the TARGET NICHE, preserving the exact same psychological trigger and structural pattern but with entirely new niche-specific content.
+1. Identify which framework category the viral title belongs to (positive, negative, educational, curiosity, or storytelling) and which specific template it most closely matches from the library above.
+2. Deeply analyse the psychological trigger (curiosity gap, FOMO, contrarian, insider knowledge, transformation, decline, challenge, etc.) and the structural pattern.
+3. Generate 10 adapted title variations for the TARGET NICHE:
+   - Start with 3–4 titles that apply the EXACT same framework template to the target niche
+   - Then add 4–5 titles that use DIFFERENT framework templates from the same psychological category
+   - Finally add 1–2 wildcard titles from a completely different category for contrast
 
 Return ONLY a valid JSON array. No markdown, no code fences, no explanation outside the JSON.
 
 [
   {
     "title": "the adapted title for target niche",
-    "formula": "short name for the formula pattern (e.g. 'The $0 vs Premium', 'The Secret Nobody Talks About')",
+    "formula": "name of the framework template used (from the library above)",
     "trigger": "the psychological trigger this uses (1 sentence)",
     "angle": "specific angle/hook suggestion for how to execute this video (1-2 sentences)"
   }
@@ -36,13 +45,13 @@ Return ONLY a valid JSON array. No markdown, no code fences, no explanation outs
 Rules:
 - All 10 titles must be different angles — no repetition of the same idea
 - Titles should feel native to the target niche, not forced
+- Replace every X/Y/Z with concrete niche-specific topics
 - Keep the energy and punchy language of the original
-- Vary the formats: some questions, some statements, some numbers, some contrarian
 - Make them genuinely compelling — these should feel like they could hit 1M+ views`;
 
   try {
     const stream = await client.messages.stream({
-      model: "claude-opus-4-5",
+      model: "claude-sonnet-4-6",
       max_tokens: 4096,
       messages: [{ role: "user", content: prompt }],
     });
