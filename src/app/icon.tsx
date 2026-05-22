@@ -17,16 +17,18 @@ export default function Icon() {
           justifyContent: "center",
         }}
       >
-        {/* Lightning bolt via clip-path polygon on a white div */}
-        <div
-          style={{
-            width: 17,
-            height: 21,
-            background: "white",
-            clipPath:
-              "polygon(65% 0%, 18% 52%, 50% 52%, 33% 100%, 83% 46%, 50% 46%, 65% 0%)",
-          }}
-        />
+        <svg
+          width="17"
+          height="21"
+          viewBox="0 0 13 17"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M8.5 0.5L1 9.5H6L4.5 16.5L13 7H8L8.5 0.5Z"
+            fill="white"
+          />
+        </svg>
       </div>
     ),
     { width: 32, height: 32 }
