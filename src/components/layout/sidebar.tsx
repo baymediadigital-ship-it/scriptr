@@ -28,9 +28,10 @@ const navItems = [
   { href: "/outliers", icon: TrendingUp, label: "Outliers" },
   { href: "/comments", icon: MessageSquareText, label: "Comment Mining" },
   { href: "/scripts", icon: FileText, label: "Scripts" },
+  { href: "/thumbnails", icon: ImageIcon, label: "Thumbnails" },
+  { href: "/format-transfer", icon: Shuffle, label: "Format Transfer" },
   { href: "/competitors", icon: Users, label: "Competitors" },
   { href: "/research", icon: BookOpen, label: "Research" },
-  { href: "/thumbnails", icon: ImageIcon, label: "Thumbnails" },
   { href: "/affiliate", icon: Handshake, label: "Affiliate" },
 ];
 
@@ -92,25 +93,19 @@ export function Sidebar({ isPro = false }: { isPro?: boolean }) {
           <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20 px-3 mb-2">
             Coming soon
           </p>
-          {[
-            { icon: Shuffle, label: "Format Transfer" },
-            { icon: DollarSign, label: "RPM Predictor" },
-          ].map(({ icon: Icon, label }) => (
-            <div
-              key={label}
-              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/25 cursor-default select-none"
-              style={{ background: "transparent", border: "1px solid transparent" }}
+          <div
+            className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white/25 cursor-default select-none"
+            style={{ background: "transparent", border: "1px solid transparent" }}
+          >
+            <DollarSign className="h-4 w-4 flex-shrink-0 text-white/20" />
+            RPM Predictor
+            <span
+              className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
+              style={{ background: "rgba(124,58,237,0.12)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.2)" }}
             >
-              <Icon className="h-4 w-4 flex-shrink-0 text-white/20" />
-              {label}
-              <span
-                className="ml-auto text-[10px] font-semibold px-1.5 py-0.5 rounded-full"
-                style={{ background: "rgba(124,58,237,0.12)", color: "#a78bfa", border: "1px solid rgba(124,58,237,0.2)" }}
-              >
-                Soon
-              </span>
-            </div>
-          ))}
+              Soon
+            </span>
+          </div>
         </div>
 
         {/* Community section */}
