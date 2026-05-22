@@ -16,10 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Scriptr — YouTube AI Script Writer",
   description: "Find outlier videos, write AI scripts, track competitors, generate thumbnails.",
-  icons: {
-    icon: "/logo.png",
-    apple: "/logo.png",
-  },
+
   openGraph: {
     title: "Scriptr — Find Viral Ideas & Write YouTube Scripts with AI",
     description: "Find outlier videos performing 2–10x above average, generate full AI scripts, track competitors, and build your channel faster. Try free for 7 days.",
