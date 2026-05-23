@@ -72,9 +72,15 @@ export default function LandingPageAd() {
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium"
             style={{ background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.25)", color: "#c4b5fd" }}>
             <div className="flex -space-x-1">
-              {["M","D","A","T","S"].map((l, i) => (
-                <div key={i} className="w-5 h-5 rounded-full flex items-center justify-center text-[9px] font-bold text-white ring-1 ring-[#08080f]"
-                  style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)" }}>{l}</div>
+              {[
+                { name: "Alex Hormozi",           avatar: "https://yt3.ggpht.com/29XFUn3pc3cC81yUUCFiyCKKdgi856IGMJ4EZBnf53zTfrWWUGvmYnYGx86K08f4XR03UxpWyw=s800-c-k-c0x00ffffff-no-rj" },
+                { name: "Jordan Welch",            avatar: "https://yt3.ggpht.com/cI1CYAcD8GLd9mjW7rZnkQugsagZN5LPnigbsZcHNXaEZXIIcXRuC_-60xN6j9pa0EpizBAA=s800-c-k-c0x00ffffff-no-rj" },
+                { name: "Nonstop",                 avatar: "https://yt3.ggpht.com/K_7w0RqxZcIRdiRO55fLzC-USfG8kxtf-n_OfJ5148hh9-fwSno3a8MlIUeC3ADY6KMFdOaOnGg=s800-c-k-c0x00ffffff-no-rj" },
+                { name: "dime",                    avatar: "https://yt3.ggpht.com/jAvKuPA36AuHPmo3n6ZvGh-dE3fFwh6J9o0m0_YdC_cIaTLJupkC3EPd-AGCBMwrbVImMHkunw=s800-c-k-c0x00ffffff-no-rj" },
+                { name: "Golden Hoops",            avatar: "https://yt3.ggpht.com/ytc/AIdro_l5eA5S4i_YlP7FJXMug8ODiqYNJbUqhODWvTQEALjqxDI=s800-c-k-c0x00ffffff-no-rj" },
+              ].map((c, i) => (
+                <img key={i} src={c.avatar} alt={c.name} title={c.name}
+                  className="w-6 h-6 rounded-full object-cover ring-2 ring-[#08080f]" />
               ))}
             </div>
             <span>Trusted by YouTube creators in 20+ niches</span>
