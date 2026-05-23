@@ -23,6 +23,16 @@ const TRIGGER_COLORS: Record<string, string> = {
   challenge: "text-pink-400 bg-pink-500/10 border-pink-500/20",
 };
 
+const TRIGGER_GUIDE = [
+  { key: "curiosity",         label: "Curiosity",         dot: "bg-yellow-400" },
+  { key: "fomo",              label: "FOMO",               dot: "bg-orange-400" },
+  { key: "contrarian",        label: "Contrarian",         dot: "bg-red-400"    },
+  { key: "transformation",    label: "Transformation",     dot: "bg-emerald-400"},
+  { key: "insider knowledge", label: "Insider Knowledge",  dot: "bg-blue-400"   },
+  { key: "challenge",         label: "Challenge",          dot: "bg-pink-400"   },
+  { key: "other",             label: "Other",              dot: "bg-violet-400" },
+];
+
 function getTriggerColor(trigger: string): string {
   const lower = trigger.toLowerCase();
   for (const [key, cls] of Object.entries(TRIGGER_COLORS)) {
@@ -204,8 +214,17 @@ export default function FormatTransferPage() {
       {/* Results */}
       {results.length > 0 && (
         <div className="space-y-3">
-          <div className="flex items-center justify-between">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
             <p className="text-sm text-white/40">{results.length} adapted titles for <span className="text-white/70">{targetNiche}</span></p>
+            <div className="flex items-center gap-3 flex-wrap">
+              <span className="text-[10px] font-semibold uppercase tracking-widest text-white/20">Trigger</span>
+              {TRIGGER_GUIDE.map(({ label, dot }) => (
+                <span key={label} className="flex items-center gap-1.5 text-[11px] text-white/35">
+                  <span className={`w-2 h-2 rounded-full flex-shrink-0 ${dot}`} />
+                  {label}
+                </span>
+              ))}
+            </div>
           </div>
 
           {/* Formula breakdown card */}
