@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -37,6 +38,7 @@ const EXAMPLES = [
 ];
 
 export default function FormatTransferPage() {
+  const router = useRouter();
   const [viralTitle, setViralTitle] = useState("");
   const [sourceNiche, setSourceNiche] = useState("");
   const [targetNiche, setTargetNiche] = useState("");
@@ -101,7 +103,7 @@ export default function FormatTransferPage() {
 
   function useTitle(title: string) {
     const params = new URLSearchParams({ videoTitle: title });
-    window.location.href = `/scripts?${params.toString()}`;
+    router.push(`/scripts?${params.toString()}`);
   }
 
   function loadExample(ex: typeof EXAMPLES[0]) {
