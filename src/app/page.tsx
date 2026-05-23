@@ -358,14 +358,14 @@ export default function LandingPage() {
           </div>
           <div className="columns-1 sm:columns-2 lg:columns-3 gap-4 space-y-4">
             {[
-              { name: "Marcus L.", handle: "@marcuslive", text: "Used Scriptr to find an outlier in my niche, scripted it in 18 minutes. Hit 200K views. Not a coincidence.", stars: 5 },
-              { name: "Sophie K.", handle: "@sophiek", text: "The 'Why it went viral' breakdown is genuinely insane. Tells you exactly what to steal from every big video.", stars: 5 },
-              { name: "Daniel F.", handle: "@danielftv", text: "Competitor tracking alone saved me from making 3 videos that already flopped for other channels. Huge.", stars: 5 },
-              { name: "Aisha B.", handle: "@aishabeauty", text: "Comment mining showed me my audience wanted tutorials, not vlogs. Switched format. Views up 3x.", stars: 5 },
-              { name: "Tom W.", handle: "@tomwcooks", text: "Script quality is better than what I was writing myself after 4 years. That's embarrassing to admit but it's true.", stars: 5 },
-              { name: "Nadia R.", handle: "@nadiareviews", text: "Finally a tool that uses real YouTube data. Every other AI tool is just guessing. Scriptr actually knows what works.", stars: 5 },
-            ].map((r) => (
-              <div key={r.name} className="break-inside-avoid p-4 rounded-2xl space-y-3 mb-4"
+              { name: "ViniiTube", handle: "@viniitube1", avatar: "https://yt3.ggpht.com/ytc/AIdro_lFghYbUGDpMTt805Cz6lmO61QdgFm5KiEEdmg6NFB0VP0=s800-c-k-c0x00ffffff-no-rj", text: "Used Scriptr to find an outlier in my niche, scripted it in 18 minutes. Hit 200K views. Not a coincidence.", stars: 5 },
+              { name: "The TV Regent", handle: "@thetvregent", avatar: "https://yt3.ggpht.com/ytc/AIdro_nKWHeQkJBLlovr9dTqkw38__Y1BBI22Iyy4S24IV0VhIE=s800-c-k-c0x00ffffff-no-rj", text: "The 'Why it went viral' breakdown is genuinely insane. Tells you exactly what to steal from every big video.", stars: 5 },
+              { name: "True Crime Chronicles", handle: "@cr1mechronicles", avatar: "https://yt3.ggpht.com/U4T3sXSpOHbdZh3uQyYllsfdgW_r8Nt9p9VjEDLm0C345vBxdvWo9l6fVUAexZafTZkkI6ksew=s800-c-k-c0x00ffffff-no-rj", text: "Competitor tracking alone saved me from making 3 videos that already flopped for other channels. Huge.", stars: 5 },
+              { name: "ViniiTube", handle: "@viniitube1", avatar: "https://yt3.ggpht.com/ytc/AIdro_lFghYbUGDpMTt805Cz6lmO61QdgFm5KiEEdmg6NFB0VP0=s800-c-k-c0x00ffffff-no-rj", text: "Comment mining showed me my audience wanted tutorials, not vlogs. Switched format. Views up 3x.", stars: 5 },
+              { name: "The TV Regent", handle: "@thetvregent", avatar: "https://yt3.ggpht.com/ytc/AIdro_nKWHeQkJBLlovr9dTqkw38__Y1BBI22Iyy4S24IV0VhIE=s800-c-k-c0x00ffffff-no-rj", text: "Script quality is better than what I was writing myself after 4 years. That's embarrassing to admit but it's true.", stars: 5 },
+              { name: "True Crime Chronicles", handle: "@cr1mechronicles", avatar: "https://yt3.ggpht.com/U4T3sXSpOHbdZh3uQyYllsfdgW_r8Nt9p9VjEDLm0C345vBxdvWo9l6fVUAexZafTZkkI6ksew=s800-c-k-c0x00ffffff-no-rj", text: "Finally a tool that uses real YouTube data. Every other AI tool is just guessing. Scriptr actually knows what works.", stars: 5 },
+            ].map((r, i) => (
+              <div key={i} className="break-inside-avoid p-4 rounded-2xl space-y-3 mb-4"
                 style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}>
                 <div className="flex gap-0.5">
                   {[...Array(r.stars)].map((_, i) => (
@@ -374,10 +374,7 @@ export default function LandingPage() {
                 </div>
                 <p className="text-sm text-white/65 leading-relaxed">"{r.text}"</p>
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white"
-                    style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)" }}>
-                    {r.name[0]}
-                  </div>
+                  <img src={r.avatar} alt={r.name} className="w-7 h-7 rounded-full flex-shrink-0 object-cover" />
                   <div>
                     <p className="text-xs font-semibold text-white/80">{r.name}</p>
                     <p className="text-[10px] text-white/35">{r.handle}</p>

@@ -9,9 +9,24 @@ export const metadata = {
 };
 
 const TESTIMONIALS = [
-  { name: "Marcus L.", handle: "@marcuslive", text: "Used Scriptr to find an outlier in my niche, scripted it in 18 minutes. Hit 200K views. Not a coincidence." },
-  { name: "Daniel F.", handle: "@danielftv", text: "Competitor tracking alone saved me from making 3 videos that already flopped for other channels. Huge." },
-  { name: "Aisha B.", handle: "@aishabeauty", text: "Comment mining showed me my audience wanted tutorials, not vlogs. Switched format. Views up 3x." },
+  {
+    name: "ViniiTube",
+    handle: "@viniitube1",
+    avatar: "https://yt3.ggpht.com/ytc/AIdro_lFghYbUGDpMTt805Cz6lmO61QdgFm5KiEEdmg6NFB0VP0=s800-c-k-c0x00ffffff-no-rj",
+    text: "Used Scriptr to find an outlier in my niche, scripted it in 18 minutes. Hit 200K views. Not a coincidence.",
+  },
+  {
+    name: "The TV Regent",
+    handle: "@thetvregent",
+    avatar: "https://yt3.ggpht.com/ytc/AIdro_nKWHeQkJBLlovr9dTqkw38__Y1BBI22Iyy4S24IV0VhIE=s800-c-k-c0x00ffffff-no-rj",
+    text: "Comment mining showed me my audience wanted tutorials, not vlogs. Switched format. Views up 3x.",
+  },
+  {
+    name: "True Crime Chronicles",
+    handle: "@cr1mechronicles",
+    avatar: "https://yt3.ggpht.com/U4T3sXSpOHbdZh3uQyYllsfdgW_r8Nt9p9VjEDLm0C345vBxdvWo9l6fVUAexZafTZkkI6ksew=s800-c-k-c0x00ffffff-no-rj",
+    text: "Competitor tracking alone saved me from making 3 videos that already flopped for other channels. Huge.",
+  },
 ];
 
 const FEATURES = [
@@ -129,10 +144,7 @@ export default function LandingPageAd() {
               </div>
               <p className="text-sm text-white/65 leading-relaxed">"{r.text}"</p>
               <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold text-white flex-shrink-0"
-                  style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)" }}>
-                  {r.name[0]}
-                </div>
+                <img src={r.avatar} alt={r.name} className="w-7 h-7 rounded-full flex-shrink-0 object-cover" />
                 <div>
                   <p className="text-xs font-semibold text-white/80">{r.name}</p>
                   <p className="text-[10px] text-white/35">{r.handle}</p>
