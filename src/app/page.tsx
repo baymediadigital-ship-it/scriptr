@@ -133,24 +133,26 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ── Video placeholder ────────────────────────────────────────────── */}
+      {/* ── Demo video ───────────────────────────────────────────────────── */}
       <section className="px-6 pb-16">
-        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden flex items-center justify-center"
+        <div className="max-w-3xl mx-auto rounded-2xl overflow-hidden"
           style={{
-            aspectRatio: "16/9",
-            background: "rgba(255,255,255,0.02)",
-            border: "1px solid rgba(255,255,255,0.07)",
-            boxShadow: "0 24px 64px rgba(0,0,0,0.5)",
+            boxShadow: "0 24px 64px rgba(0,0,0,0.6), 0 0 0 1px rgba(255,255,255,0.07)",
           }}>
-          {/* Play button */}
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-16 h-16 rounded-full flex items-center justify-center cursor-pointer transition-all"
-              style={{ background: "rgba(124,58,237,0.2)", border: "1px solid rgba(124,58,237,0.35)" }}>
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="white" style={{ marginLeft: 3 }}>
-                <path d="M8 5v14l11-7z" />
-              </svg>
-            </div>
-            <p className="text-xs text-white/25">Watch the 2-min demo</p>
+          <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+            <iframe
+              src="https://www.youtube.com/embed/lJR_nAw5Vpg?rel=0&modestbranding=1&color=white"
+              title="Scriptr Demo"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              style={{
+                position: "absolute",
+                top: 0, left: 0,
+                width: "100%",
+                height: "100%",
+                border: 0,
+              }}
+            />
           </div>
         </div>
       </section>
