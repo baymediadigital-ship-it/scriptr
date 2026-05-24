@@ -78,6 +78,7 @@ export default function LandingPageAd() {
                 { name: "Nonstop",                 avatar: "https://yt3.ggpht.com/K_7w0RqxZcIRdiRO55fLzC-USfG8kxtf-n_OfJ5148hh9-fwSno3a8MlIUeC3ADY6KMFdOaOnGg=s800-c-k-c0x00ffffff-no-rj" },
                 { name: "dime",                    avatar: "https://yt3.ggpht.com/jAvKuPA36AuHPmo3n6ZvGh-dE3fFwh6J9o0m0_YdC_cIaTLJupkC3EPd-AGCBMwrbVImMHkunw=s800-c-k-c0x00ffffff-no-rj" },
                 { name: "Golden Hoops",            avatar: "https://yt3.ggpht.com/ytc/AIdro_l5eA5S4i_YlP7FJXMug8ODiqYNJbUqhODWvTQEALjqxDI=s800-c-k-c0x00ffffff-no-rj" },
+                { name: "The Diary Of A CEO",      avatar: "https://yt3.ggpht.com/JHCZDz37bsTmwoE1o4LEodF5vhsHfk29kCEauDTFr27-7hHXsHHvvWGzcG77v32ERrkpfInkGQ=s800-c-k-c0x00ffffff-no-rj" },
               ].map((c, i) => (
                 <img key={i} src={c.avatar} alt={c.name} title={c.name}
                   className="w-6 h-6 rounded-full object-cover ring-2 ring-[#08080f]" />
