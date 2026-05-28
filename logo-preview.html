@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #08080f; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; padding: 48px; display: flex; flex-direction: column; gap: 48px; }
+
+  .label { color: rgba(255,255,255,0.3); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* Sidebar mock */
+  .sidebar { width: 240px; background: rgba(8,8,15,0.95); border: 1px solid rgba(255,255,255,0.06); border-radius: 16px; padding: 0; overflow: hidden; }
+  .logo-area { height: 64px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+
+  /* Option 2 — Text wordmark */
+  .wordmark-plain { font-size: 20px; font-weight: 800; color: white; letter-spacing: -0.04em; }
+  .wordmark-gradient { font-size: 20px; font-weight: 800; letter-spacing: -0.04em; background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .wordmark-accent { font-size: 20px; font-weight: 800; letter-spacing: -0.04em; color: white; }
+  .wordmark-accent span { color: #a78bfa; }
+
+  /* Option 3 — SVG bolt */
+  .bolt-logo { display: flex; align-items: center; gap: 10px; }
+  .bolt-logo span { font-size: 19px; font-weight: 800; color: white; letter-spacing: -0.04em; }
+
+  .nav-items { padding: 12px 12px; display: flex; flex-direction: column; gap: 2px; }
+  .nav-item { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border-radius: 10px; color: rgba(255,255,255,0.4); font-size: 13.5px; font-weight: 500; }
+  .nav-item.active { background: rgba(124,58,237,0.15); border: 1px solid rgba(124,58,237,0.25); color: white; }
+  .nav-item .dot { width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; margin-left: auto; }
+  .nav-dot { width: 14px; height: 14px; border-radius: 4px; background: rgba(255,255,255,0.08); flex-shrink: 0; }
+  .nav-dot.active { background: rgba(124,58,237,0.4); }
+</style>
+</head>
+<body>
+
+  <!-- Option 2a: Pure wordmark -->
+  <div>
+    <div class="label">Option 2a — Bold wordmark</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="wordmark-plain">Scriptr</div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 2b: Gradient wordmark -->
+  <div>
+    <div class="label">Option 2b — Gradient wordmark</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="wordmark-gradient">Scriptr</div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 2c: Accent dot -->
+  <div>
+    <div class="label">Option 2c — Wordmark + violet accent</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="wordmark-accent">Scriptr<span>.</span></div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 3a: SVG bolt (violet, no circle) -->
+  <div>
+    <div class="label">Option 3a — SVG bolt (violet) + wordmark</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="bolt-logo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+            <path d="M13 2L4.5 13.5H11L10 22L20.5 10H14L13 2Z" fill="#a78bfa" stroke="#a78bfa" stroke-width="0.5" stroke-linejoin="round"/>
+          </svg>
+          <span>Scriptr</span>
+        </div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 3b: SVG bolt (white) + gradient wordmark -->
+  <div>
+    <div class="label">Option 3b — SVG bolt (white) + gradient wordmark</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="bolt-logo">
+          <svg width="20" height="22" viewBox="0 0 20 24" fill="none">
+            <path d="M11.5 1L2 14H9.5L8 23L19 10H11.5L11.5 1Z" fill="white" stroke="white" stroke-width="0.3" stroke-linejoin="round"/>
+          </svg>
+          <span style="background: linear-gradient(135deg, #ffffff 0%, #c4b5fd 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size:19px; font-weight:800; letter-spacing:-0.04em;">Scriptr</span>
+        </div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Option 3c: Rounded square container bolt -->
+  <div>
+    <div class="label">Option 3c — Bolt in rounded square + wordmark</div>
+    <div class="sidebar">
+      <div class="logo-area">
+        <div class="bolt-logo">
+          <div style="width:30px;height:30px;border-radius:8px;background:linear-gradient(135deg,#7c3aed,#6d28d9);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="15" height="17" viewBox="0 0 15 19" fill="none">
+              <path d="M9 1L1.5 10.5H7.5L6.5 18L14 8.5H8L9 1Z" fill="white" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <span style="font-size:18px;font-weight:800;color:white;letter-spacing:-0.04em;">Scriptr</span>
+        </div>
+      </div>
+      <div class="nav-items">
+        <div class="nav-item active"><div class="nav-dot active"></div> Dashboard <div class="dot"></div></div>
+        <div class="nav-item"><div class="nav-dot"></div> Ideas</div>
+        <div class="nav-item"><div class="nav-dot"></div> Outliers</div>
+        <div class="nav-item"><div class="nav-dot"></div> Scripts</div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

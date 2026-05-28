@@ -210,6 +210,42 @@ export async function getPopularThumbnails(maxResults = 24): Promise<{ id: strin
     .filter((v: any) => v.thumbnail && v.id);
 }
 
+export async function searchVideosByNiche(
+  niche: string,
+  maxResults = 40
+): Promise<{ id: string; title: string; channel: string; viewCount: number; publishedAt: string }[]> {
+  const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+
+  const searchData = await request<any>("search", {
+    part: "snippet",
+    type: "video",
+    q: niche,
+    order: "viewCount",
+    publishedAfter: since,
+    maxResults: String(Math.min(maxResults, 50)),
+    videoDuration: "medium",
+  });
+
+  const ids: string[] = (searchData.items ?? [])
+    .map((i: any) => i.id?.videoId)
+    .filter(Boolean);
+
+  if (!ids.length) return [];
+
+  const statsData = await request<any>("videos", {
+    part: "snippet,statistics",
+    id: ids.join(","),
+  });
+
+  return (statsData.items ?? []).map((item: any) => ({
+    id: item.id,
+    title: item.snippet?.title ?? "",
+    channel: item.snippet?.channelTitle ?? "",
+    viewCount: parseInt(item.statistics?.viewCount ?? "0", 10),
+    publishedAt: item.snippet?.publishedAt ?? "",
+  }));
+}
+
 export async function getVideoById(videoId: string): Promise<YouTubeVideo> {
   const data = await request<any>("videos", {
     part: "snippet,statistics,contentDetails",

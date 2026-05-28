@@ -72,4 +72,6 @@ export const QUOTA_COSTS = {
   commentThreads: 1,
   // Full outlier search for 50 videos ≈ 1 (channel) + 1 (playlist, 1 page) + 1 (videos batch) = ~3 units
   outlierSearch: 3,
+  // Trending formats: 100 (search) + 1 (videos stats) = ~101 units
+  trendingFormats: 101,
 };

@@ -19,6 +19,7 @@ import {
   Handshake,
   Shuffle,
   DollarSign,
+  Flame,
 } from "lucide-react";
 import { ScriptrLogo } from "@/components/ui/logo";
 
@@ -30,6 +31,7 @@ const navItems = [
   { href: "/scripts", icon: FileText, label: "Scripts" },
   { href: "/thumbnails", icon: ImageIcon, label: "Thumbnails" },
   { href: "/format-transfer", icon: Shuffle, label: "Format Transfer" },
+  { href: "/trending-formats", icon: Flame, label: "Trending Formats" },
   { href: "/competitors", icon: Users, label: "Competitors" },
   { href: "/research", icon: BookOpen, label: "Research" },
   { href: "/affiliate", icon: Handshake, label: "Affiliate" },

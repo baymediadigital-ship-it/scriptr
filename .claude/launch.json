@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "scriptr",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "preview",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3001"],
+      "port": 3001
+    }
+  ]
+}
