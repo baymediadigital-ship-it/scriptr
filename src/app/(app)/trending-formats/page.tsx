@@ -1,28 +1,36 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TrendingUp, Sparkles, ArrowRight, Target, Users, Globe, Zap } from "lucide-react";
+import { TrendingUp, Sparkles, ArrowRight, Target, Users, Zap, Eye } from "lucide-react";
+
+interface VideoExample {
+  id: string;
+  title: string;
+  channel: string;
+  viewCount: number;
+  thumbnail: string;
+}
 
 interface TrendingFormat {
   format: string;
   template: string;
   trigger: string;
   why: string;
-  examples: string[];
+  examples: VideoExample[];
   count: number;
 }
 
 const TRIGGER_COLORS: Record<string, string> = {
-  curiosity:          "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
-  fomo:               "text-orange-400 bg-orange-500/10 border-orange-500/20",
-  contrarian:         "text-red-400 bg-red-500/10 border-red-500/20",
-  transformation:     "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-  "insider knowledge":"text-blue-400 bg-blue-500/10 border-blue-500/20",
-  challenge:          "text-pink-400 bg-pink-500/10 border-pink-500/20",
+  curiosity:            "text-yellow-400 bg-yellow-500/10 border-yellow-500/20",
+  fomo:                 "text-orange-400 bg-orange-500/10 border-orange-500/20",
+  contrarian:           "text-red-400 bg-red-500/10 border-red-500/20",
+  transformation:       "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+  "insider knowledge":  "text-blue-400 bg-blue-500/10 border-blue-500/20",
+  challenge:            "text-pink-400 bg-pink-500/10 border-pink-500/20",
 };
 
 function getTriggerColor(trigger: string) {
@@ -31,6 +39,12 @@ function getTriggerColor(trigger: string) {
     if (lower.includes(key)) return cls;
   }
   return "text-violet-400 bg-violet-500/10 border-violet-500/20";
+}
+
+function formatViews(n: number) {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(0)}K`;
+  return String(n);
 }
 
 const EXAMPLES = ["personal finance", "fitness", "chess", "true crime", "productivity", "AI tools"];
@@ -42,8 +56,7 @@ export default function TrendingFormatsPage() {
   const [formats, setFormats] = useState<TrendingFormat[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [meta, setMeta] = useState<{ niche: number; competitor: number; total: number } | null>(null);
-  const bufferRef = useRef("");
+  const [meta, setMeta] = useState<{ total: number; analyzed: number } | null>(null);
 
   async function handleAnalyze() {
     if (!niche.trim() && !includeCompetitors) return;
@@ -51,7 +64,6 @@ export default function TrendingFormatsPage() {
     setFormats([]);
     setError("");
     setMeta(null);
-    bufferRef.current = "";
 
     try {
       const res = await fetch("/api/trending-formats", {
@@ -60,43 +72,15 @@ export default function TrendingFormatsPage() {
         body: JSON.stringify({ niche, includeCompetitors }),
       });
 
+      const data = await res.json();
+
       if (!res.ok) {
-        const data = await res.json();
         setError(data.error ?? "Failed to analyze formats");
         return;
       }
 
-      setMeta({
-        niche: parseInt(res.headers.get("X-Niche-Count") ?? "0"),
-        competitor: parseInt(res.headers.get("X-Competitor-Count") ?? "0"),
-        total: parseInt(res.headers.get("X-Title-Count") ?? "0"),
-      });
-
-      const reader = res.body!.getReader();
-      const decoder = new TextDecoder();
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        bufferRef.current += decoder.decode(value, { stream: true });
-        try {
-          const match = bufferRef.current.match(/\[[\s\S]*\]/);
-          if (match && match[0].trim().endsWith("]")) {
-            const parsed = JSON.parse(match[0]);
-            if (Array.isArray(parsed)) setFormats(parsed);
-          }
-        } catch { /* keep buffering */ }
-      }
-
-      // Final parse
-      try {
-        const match = bufferRef.current.match(/\[[\s\S]*\]/);
-        if (!match) throw new Error("No JSON found");
-        const parsed = JSON.parse(match[0]);
-        if (Array.isArray(parsed)) setFormats(parsed);
-      } catch (e: any) {
-        setError(`Failed to parse results: ${e.message}`);
-      }
+      setFormats(data.formats ?? []);
+      setMeta(data.meta ?? null);
     } finally {
       setLoading(false);
     }
@@ -116,7 +100,7 @@ export default function TrendingFormatsPage() {
           <h1 className="text-2xl font-bold">Trending Formats</h1>
         </div>
         <p className="text-white/40 text-sm">
-          Discover which title formats and structures are dominating right now — pulled from real YouTube data.
+          Discover which title formats are dominating right now — backed by real view counts and thumbnails.
         </p>
       </div>
 
@@ -126,7 +110,9 @@ export default function TrendingFormatsPage() {
         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
         <div className="space-y-1.5">
-          <Label className="text-xs text-white/50">Your niche <span className="text-white/25">(optional if using competitors)</span></Label>
+          <Label className="text-xs text-white/50">
+            Your niche <span className="text-white/25">(optional if using competitors)</span>
+          </Label>
           <Input
             placeholder="e.g. personal finance, fitness, AI tools, chess..."
             value={niche}
@@ -159,7 +145,10 @@ export default function TrendingFormatsPage() {
         >
           <div
             className="w-4 h-4 rounded flex items-center justify-center flex-shrink-0 transition-all"
-            style={{ background: includeCompetitors ? "rgba(124,58,237,0.8)" : "rgba(255,255,255,0.05)", border: `1px solid ${includeCompetitors ? "transparent" : "rgba(255,255,255,0.15)"}` }}
+            style={{
+              background: includeCompetitors ? "rgba(124,58,237,0.8)" : "rgba(255,255,255,0.05)",
+              border: `1px solid ${includeCompetitors ? "transparent" : "rgba(255,255,255,0.15)"}`,
+            }}
           >
             {includeCompetitors && (
               <svg width="9" height="7" viewBox="0 0 9 7" fill="none">
@@ -189,78 +178,46 @@ export default function TrendingFormatsPage() {
       )}
 
       {/* Loading skeleton */}
-      {loading && formats.length === 0 && (
+      {loading && (
         <div className="space-y-3">
           {[...Array(5)].map((_, i) => (
-            <div key={i} className="h-32 rounded-2xl shimmer" style={{ animationDelay: `${i * 0.1}s` }} />
+            <div key={i} className="h-48 rounded-2xl shimmer" style={{ animationDelay: `${i * 0.1}s` }} />
           ))}
         </div>
       )}
 
       {/* Results */}
-      {formats.length > 0 && (
+      {!loading && formats.length > 0 && (
         <div className="space-y-3">
           {/* Meta bar */}
           {meta && (
-            <div className="flex items-center gap-4 flex-wrap text-xs text-white/30">
-              <span className="font-medium text-white/50">{formats.length} trending formats identified</span>
-              <span className="flex items-center gap-1">
-                <Globe className="h-3 w-3" /> {meta.niche} niche videos
-              </span>
-              <span className="flex items-center gap-1">
-                <Users className="h-3 w-3" /> {meta.competitor} competitor outliers
-              </span>
-              <span className="text-white/20">from {meta.total} total titles analyzed</span>
-            </div>
+            <p className="text-xs text-white/30">
+              <span className="text-white/50 font-medium">{formats.length} trending formats</span>
+              {" "}identified from{" "}
+              <span className="text-white/50">{meta.analyzed} videos</span> analyzed
+            </p>
           )}
 
           {formats.map((f, i) => (
             <div
               key={i}
-              className="group rounded-2xl p-5 space-y-3 transition-all duration-200 hover:border-white/12"
+              className="group rounded-2xl p-5 space-y-4 transition-all duration-200 hover:border-white/12"
               style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
+              {/* Top row: name, trigger, count, use button */}
               <div className="flex items-start justify-between gap-4">
-                <div className="flex-1 min-w-0 space-y-2.5">
-                  {/* Format name + trigger + count */}
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-xs text-white/25 font-mono">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="font-semibold text-white/90 text-sm">{f.format}</span>
-                    <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border ${getTriggerColor(f.trigger)}`}>
-                      <Target className="h-2.5 w-2.5" />
-                      {f.trigger}
-                    </span>
-                    <span className="flex items-center gap-1 text-xs text-white/25">
-                      <Zap className="h-3 w-3 text-yellow-400/50" />
-                      {f.count} videos
-                    </span>
-                  </div>
-
-                  {/* Template */}
-                  <div
-                    className="rounded-xl px-3 py-2 font-mono text-xs text-violet-300/80"
-                    style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.15)" }}
-                  >
-                    {f.template}
-                  </div>
-
-                  {/* Why it works */}
-                  <p className="text-xs text-white/40 leading-relaxed">{f.why}</p>
-
-                  {/* Examples */}
-                  {f.examples?.length > 0 && (
-                    <div className="space-y-1">
-                      {f.examples.slice(0, 2).map((ex, j) => (
-                        <p key={j} className="text-xs text-white/30 flex items-start gap-1.5">
-                          <span className="text-violet-400/40 flex-shrink-0 mt-0.5">›</span>
-                          <span className="italic">"{ex}"</span>
-                        </p>
-                      ))}
-                    </div>
-                  )}
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="text-xs text-white/25 font-mono">{String(i + 1).padStart(2, "0")}</span>
+                  <span className="font-semibold text-white/90 text-sm">{f.format}</span>
+                  <span className={`inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full border ${getTriggerColor(f.trigger)}`}>
+                    <Target className="h-2.5 w-2.5" />
+                    {f.trigger}
+                  </span>
+                  <span className="flex items-center gap-1 text-xs text-white/25">
+                    <Zap className="h-3 w-3 text-yellow-400/50" />
+                    {f.count} videos
+                  </span>
                 </div>
-
-                {/* Use this format button */}
                 <button
                   onClick={() => useFormat(f.template)}
                   className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
@@ -269,6 +226,61 @@ export default function TrendingFormatsPage() {
                   Use format <ArrowRight className="h-3 w-3" />
                 </button>
               </div>
+
+              {/* Template */}
+              <div
+                className="rounded-xl px-3 py-2 font-mono text-xs text-violet-300/80"
+                style={{ background: "rgba(124,58,237,0.08)", border: "1px solid rgba(124,58,237,0.15)" }}
+              >
+                {f.template}
+              </div>
+
+              {/* Why it works */}
+              <p className="text-xs text-white/40 leading-relaxed">{f.why}</p>
+
+              {/* Video examples with thumbnails */}
+              {f.examples?.length > 0 && (
+                <div className="space-y-1.5">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20">Real examples</p>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                    {f.examples.map((v) => (
+                      <a
+                        key={v.id}
+                        href={`https://youtube.com/watch?v=${v.id}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group/card rounded-xl overflow-hidden transition-all hover:border-white/15"
+                        style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
+                      >
+                        {/* Thumbnail */}
+                        <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+                          <img
+                            src={v.thumbnail}
+                            alt={v.title}
+                            className="absolute inset-0 w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                          {/* View count overlay */}
+                          <div
+                            className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-semibold text-white"
+                            style={{ background: "rgba(0,0,0,0.75)" }}
+                          >
+                            <Eye className="h-2.5 w-2.5" />
+                            {formatViews(v.viewCount)}
+                          </div>
+                        </div>
+                        {/* Title + channel */}
+                        <div className="p-2 space-y-0.5">
+                          <p className="text-xs font-medium text-white/80 leading-snug line-clamp-2 group-hover/card:text-white transition-colors">
+                            {v.title}
+                          </p>
+                          <p className="text-[10px] text-white/30">{v.channel}</p>
+                        </div>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
