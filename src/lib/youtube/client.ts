@@ -224,6 +224,8 @@ export async function searchVideosByNiche(
     publishedAfter: since,
     maxResults: String(Math.min(maxResults, 50)),
     videoDuration: "medium",
+    relevanceLanguage: "en",
+    regionCode: "US",
   });
 
   const ids: string[] = (searchData.items ?? [])

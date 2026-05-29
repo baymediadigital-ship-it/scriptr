@@ -35,6 +35,8 @@ export async function POST(req: NextRequest) {
     try {
       const videos = await searchVideosByNiche(niche.trim(), 40);
       for (const v of videos) {
+        // Only include videos with meaningful traction
+        if (v.viewCount < 50_000) continue;
         allVideos.push({
           id: v.id,
           title: v.title,
@@ -62,7 +64,7 @@ export async function POST(req: NextRequest) {
         tracked.map(async (ch) => {
           try {
             const videos = await getChannelVideos(ch.channel_id, 30);
-            const { outliers } = detectOutliers(videos, { minOutlierScore: 1.5 });
+            const { outliers } = detectOutliers(videos, { minOutlierScore: 2.0 });
             for (const v of outliers) {
               allVideos.push({
                 id: v.id,
