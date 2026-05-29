@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TrendingUp, Sparkles, ArrowRight, Target, Users, Zap, Eye } from "lucide-react";
+import { TrendingUp, Sparkles, ArrowRight, Target, Users, Zap, Eye, ChevronDown } from "lucide-react";
 
 interface VideoExample {
   id: string;
@@ -47,12 +47,37 @@ function formatViews(n: number) {
   return String(n);
 }
 
-const EXAMPLES = ["personal finance", "fitness", "chess", "true crime", "productivity", "AI tools"];
+const NICHE_EXAMPLES = ["personal finance", "fitness", "chess", "true crime", "productivity", "AI tools"];
+
+const LANGUAGES = [
+  { code: "en", label: "English" },
+  { code: "es", label: "Spanish" },
+  { code: "fr", label: "French" },
+  { code: "pt", label: "Portuguese" },
+  { code: "de", label: "German" },
+  { code: "hi", label: "Hindi" },
+  { code: "id", label: "Indonesian" },
+  { code: "ja", label: "Japanese" },
+  { code: "ko", label: "Korean" },
+  { code: "ar", label: "Arabic" },
+  { code: "ru", label: "Russian" },
+  { code: "zh-Hans", label: "Chinese (Simplified)" },
+];
+
+const VIEW_THRESHOLDS = [
+  { label: "10K+",  value: 10_000 },
+  { label: "50K+",  value: 50_000 },
+  { label: "100K+", value: 100_000 },
+  { label: "500K+", value: 500_000 },
+  { label: "1M+",   value: 1_000_000 },
+];
 
 export default function TrendingFormatsPage() {
   const router = useRouter();
   const [niche, setNiche] = useState("");
   const [includeCompetitors, setIncludeCompetitors] = useState(true);
+  const [language, setLanguage] = useState("en");
+  const [minViews, setMinViews] = useState(50_000);
   const [formats, setFormats] = useState<TrendingFormat[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -69,7 +94,7 @@ export default function TrendingFormatsPage() {
       const res = await fetch("/api/trending-formats", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ niche, includeCompetitors }),
+        body: JSON.stringify({ niche, includeCompetitors, language, minViews }),
       });
 
       const data = await res.json();
@@ -91,6 +116,8 @@ export default function TrendingFormatsPage() {
     router.push(`/ideas?${params.toString()}`);
   }
 
+  const selectedLang = LANGUAGES.find(l => l.code === language) ?? LANGUAGES[0];
+
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-fade-up">
       {/* Header */}
@@ -109,6 +136,7 @@ export default function TrendingFormatsPage() {
         className="rounded-2xl p-5 space-y-4"
         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
       >
+        {/* Niche */}
         <div className="space-y-1.5">
           <Label className="text-xs text-white/50">
             Your niche <span className="text-white/25">(optional if using competitors)</span>
@@ -121,7 +149,7 @@ export default function TrendingFormatsPage() {
             className="text-sm"
           />
           <div className="flex gap-2 flex-wrap pt-1">
-            {EXAMPLES.map((ex) => (
+            {NICHE_EXAMPLES.map((ex) => (
               <button
                 key={ex}
                 onClick={() => setNiche(ex)}
@@ -131,6 +159,50 @@ export default function TrendingFormatsPage() {
                 {ex}
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Language + View threshold row */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          {/* Language */}
+          <div className="space-y-1.5">
+            <Label className="text-xs text-white/50">Language</Label>
+            <div className="relative">
+              <select
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="w-full appearance-none rounded-xl px-3 py-2.5 text-sm text-white/80 cursor-pointer pr-8 focus:outline-none focus:ring-1 focus:ring-violet-500/50"
+                style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
+              >
+                {LANGUAGES.map((l) => (
+                  <option key={l.code} value={l.code} style={{ background: "#1a1a2e" }}>
+                    {l.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-white/30 pointer-events-none" />
+            </div>
+          </div>
+
+          {/* Min view threshold */}
+          <div className="space-y-1.5">
+            <Label className="text-xs text-white/50">Minimum views</Label>
+            <div className="flex gap-1.5 flex-wrap">
+              {VIEW_THRESHOLDS.map((t) => (
+                <button
+                  key={t.value}
+                  onClick={() => setMinViews(t.value)}
+                  className="flex-1 min-w-0 px-2 py-2 rounded-xl text-xs font-medium transition-all cursor-pointer"
+                  style={{
+                    background: minViews === t.value ? "rgba(124,58,237,0.25)" : "rgba(255,255,255,0.04)",
+                    border: `1px solid ${minViews === t.value ? "rgba(124,58,237,0.5)" : "rgba(255,255,255,0.08)"}`,
+                    color: minViews === t.value ? "#c4b5fd" : "rgba(255,255,255,0.4)",
+                  }}
+                >
+                  {t.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -189,12 +261,12 @@ export default function TrendingFormatsPage() {
       {/* Results */}
       {!loading && formats.length > 0 && (
         <div className="space-y-3">
-          {/* Meta bar */}
           {meta && (
             <p className="text-xs text-white/30">
               <span className="text-white/50 font-medium">{formats.length} trending formats</span>
               {" "}identified from{" "}
               <span className="text-white/50">{meta.analyzed} videos</span> analyzed
+              {" · "}{selectedLang.label} · {VIEW_THRESHOLDS.find(t => t.value === minViews)?.label} views
             </p>
           )}
 
@@ -204,7 +276,7 @@ export default function TrendingFormatsPage() {
               className="group rounded-2xl p-5 space-y-4 transition-all duration-200 hover:border-white/12"
               style={{ background: "rgba(255,255,255,0.025)", border: "1px solid rgba(255,255,255,0.06)" }}
             >
-              {/* Top row: name, trigger, count, use button */}
+              {/* Top row */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-xs text-white/25 font-mono">{String(i + 1).padStart(2, "0")}</span>
@@ -235,10 +307,10 @@ export default function TrendingFormatsPage() {
                 {f.template}
               </div>
 
-              {/* Why it works */}
+              {/* Why */}
               <p className="text-xs text-white/40 leading-relaxed">{f.why}</p>
 
-              {/* Video examples with thumbnails */}
+              {/* Video examples */}
               {f.examples?.length > 0 && (
                 <div className="space-y-1.5">
                   <p className="text-[10px] font-semibold uppercase tracking-widest text-white/20">Real examples</p>
@@ -252,7 +324,6 @@ export default function TrendingFormatsPage() {
                         className="group/card rounded-xl overflow-hidden transition-all hover:border-white/15"
                         style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.06)" }}
                       >
-                        {/* Thumbnail */}
                         <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
                           <img
                             src={v.thumbnail}
@@ -260,7 +331,6 @@ export default function TrendingFormatsPage() {
                             className="absolute inset-0 w-full h-full object-cover"
                             loading="lazy"
                           />
-                          {/* View count overlay */}
                           <div
                             className="absolute bottom-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 rounded-md text-[10px] font-semibold text-white"
                             style={{ background: "rgba(0,0,0,0.75)" }}
@@ -269,7 +339,6 @@ export default function TrendingFormatsPage() {
                             {formatViews(v.viewCount)}
                           </div>
                         </div>
-                        {/* Title + channel */}
                         <div className="p-2 space-y-0.5">
                           <p className="text-xs font-medium text-white/80 leading-snug line-clamp-2 group-hover/card:text-white transition-colors">
                             {v.title}

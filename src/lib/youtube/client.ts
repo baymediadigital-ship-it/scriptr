@@ -212,7 +212,8 @@ export async function getPopularThumbnails(maxResults = 24): Promise<{ id: strin
 
 export async function searchVideosByNiche(
   niche: string,
-  maxResults = 40
+  maxResults = 40,
+  language = "en"
 ): Promise<{ id: string; title: string; channel: string; viewCount: number; publishedAt: string }[]> {
   const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
 
@@ -224,8 +225,8 @@ export async function searchVideosByNiche(
     publishedAfter: since,
     maxResults: String(Math.min(maxResults, 50)),
     videoDuration: "medium",
-    relevanceLanguage: "en",
-    regionCode: "US",
+    relevanceLanguage: language,
+    regionCode: language === "en" ? "US" : "",
   });
 
   const ids: string[] = (searchData.items ?? [])

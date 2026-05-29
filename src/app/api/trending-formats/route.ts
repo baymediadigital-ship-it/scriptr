@@ -9,7 +9,7 @@ import { checkQuota, incrementQuota, QUOTA_COSTS } from "@/lib/youtube/quota";
 const anthropic = new Anthropic();
 
 export async function POST(req: NextRequest) {
-  const { niche, includeCompetitors = true } = await req.json();
+  const { niche, includeCompetitors = true, language = "en", minViews = 50_000 } = await req.json();
 
   if (!niche?.trim() && !includeCompetitors) {
     return NextResponse.json({ error: "Provide a niche or enable competitor analysis" }, { status: 400 });
@@ -33,10 +33,9 @@ export async function POST(req: NextRequest) {
   // Niche search
   if (niche?.trim()) {
     try {
-      const videos = await searchVideosByNiche(niche.trim(), 40);
+      const videos = await searchVideosByNiche(niche.trim(), 40, language);
       for (const v of videos) {
-        // Only include videos with meaningful traction
-        if (v.viewCount < 50_000) continue;
+        if (v.viewCount < minViews) continue;
         allVideos.push({
           id: v.id,
           title: v.title,
