@@ -221,7 +221,7 @@ export default function IdeasPage() {
                 </div>
                 <button
                   onClick={() => useIdea(idea)}
-                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium text-white/50 hover:text-white opacity-0 group-hover:opacity-100 transition-all cursor-pointer"
+                  className="flex-shrink-0 flex items-center gap-1.5 px-3 py-2.5 min-h-[44px] rounded-xl text-xs font-medium text-white/50 hover:text-white opacity-0 group-hover:opacity-100 sm:opacity-0 transition-all cursor-pointer"
                   style={{ background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.25)" }}
                 >
                   Script it <ArrowRight className="h-3 w-3" />

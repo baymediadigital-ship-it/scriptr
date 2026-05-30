@@ -158,7 +158,7 @@ export function Sidebar({ isPro = false }: { isPro?: boolean }) {
           href="/faq"
           target="_blank"
           className={cn(
-            "flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-medium text-white/30 hover:text-white/60 transition-all duration-150 cursor-pointer"
+            "flex items-center gap-3 px-3 py-2.5 min-h-[44px] rounded-xl text-xs font-medium text-white/30 hover:text-white/60 transition-all duration-150 cursor-pointer"
           )}
           style={{ background: "transparent", border: "1px solid transparent" }}
         >

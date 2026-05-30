@@ -318,6 +318,20 @@
   animation: shimmer 1.1s linear infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .shimmer {
+    animation: none;
+    background: rgba(255,255,255,0.05);
+  }
+  .carousel-scroll {
+    animation: none;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
+
 /* ── Scrollbar ────────────────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
@@ -350,8 +364,27 @@ body::before {
 /* ── Focus ring ───────────────────────────────────────────────────────────── */
 
 *:focus-visible {
-  outline: 2px solid rgba(124, 58, 237, 0.6);
-  outline-offset: 2px;
+  outline: 2px solid rgba(124, 58, 237, 0.85);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Skip to main content — keyboard nav */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: #7c3aed;
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: 0 0 0.5rem 0.5rem;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
 }
 
 /* ── Selection ────────────────────────────────────────────────────────────── */
