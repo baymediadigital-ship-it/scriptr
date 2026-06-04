@@ -4,7 +4,7 @@ import Anthropic from "@anthropic-ai/sdk";
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 export async function POST(req: NextRequest) {
-  const { videoTitle, description, tone, style } = await req.json();
+  const { videoTitle, description, tone, style, channelStyle } = await req.json();
 
   if (!videoTitle?.trim()) {
     return new Response(JSON.stringify({ error: "videoTitle is required" }), { status: 400 });
@@ -16,6 +16,7 @@ VIDEO TITLE: "${videoTitle}"
 ${description ? `CONTEXT: ${description}` : ""}
 ${tone ? `TONE: ${tone}` : ""}
 ${style ? `PREFERRED STYLE: ${style}` : ""}
+${channelStyle ? `CHANNEL STYLE / BRAND: ${channelStyle} — all concepts must feel consistent with this aesthetic` : ""}
 
 VISUAL STYLE RULES — every concept must follow these:
 - Background: near-black (#080808 to #111111) or very dark charcoal. Never white, never bright.

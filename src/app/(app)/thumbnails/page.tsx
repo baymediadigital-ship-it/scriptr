@@ -3,7 +3,6 @@
 import { useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -12,7 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Wand2, Download, RefreshCw, ImageIcon, Loader2 } from "lucide-react";
+import { Wand2, Download, RefreshCw, ImageIcon, Loader2, Sparkles } from "lucide-react";
 
 interface Concept {
   name: string;
@@ -89,17 +88,20 @@ function ThumbnailCard({ item, index, onRegenerate }: {
   index: number;
   onRegenerate: (index: number) => void;
 }) {
+  const [showOverlay, setShowOverlay] = useState(true);
+  const accentColor = item.concept.colors[0] ?? "#ffffff";
+
   return (
     <div
       className="rounded-2xl overflow-hidden flex flex-col"
       style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.07)" }}
     >
       {/* Image area */}
-      <div className="relative w-full" style={{ aspectRatio: "16/9", background: "rgba(0,0,0,0.3)" }}>
+      <div className="relative w-full" style={{ aspectRatio: "16/9", background: "rgba(0,0,0,0.4)" }}>
         {item.loading && (
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-2">
             <Loader2 className="h-6 w-6 animate-spin text-violet-400" />
-            <p className="text-xs text-white/30">Generating image…</p>
+            <p className="text-xs text-white/30">Generating…</p>
           </div>
         )}
         {item.error && !item.loading && (
@@ -109,45 +111,84 @@ function ThumbnailCard({ item, index, onRegenerate }: {
           </div>
         )}
         {item.url && !item.loading && (
-          <img src={item.url} alt={item.concept.name} className="w-full h-full object-cover" />
+          <>
+            <img
+              src={item.url}
+              alt={item.concept.name}
+              className="w-full h-full object-cover"
+            />
+            {/* Text overlay on image */}
+            {showOverlay && item.concept.textOverlay && (
+              <div className="absolute inset-0 flex items-end pointer-events-none"
+                style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }}>
+                <div className="p-3 w-full">
+                  <p
+                    className="font-black leading-tight uppercase tracking-tight"
+                    style={{
+                      fontSize: "clamp(14px, 3.5vw, 22px)",
+                      color: accentColor,
+                      textShadow: "0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8)",
+                      WebkitTextStroke: "0.5px rgba(0,0,0,0.5)",
+                      maxWidth: "65%",
+                      lineHeight: 1.1,
+                    }}
+                  >
+                    {item.concept.textOverlay}
+                  </p>
+                </div>
+              </div>
+            )}
+            {/* Toggle overlay button */}
+            {item.concept.textOverlay && (
+              <button
+                onClick={() => setShowOverlay((v) => !v)}
+                className="absolute top-2 right-2 px-2 py-1 rounded-lg text-[10px] font-semibold transition-all cursor-pointer"
+                style={{
+                  background: "rgba(0,0,0,0.6)",
+                  border: "1px solid rgba(255,255,255,0.15)",
+                  color: showOverlay ? "#c4b5fd" : "rgba(255,255,255,0.4)",
+                  backdropFilter: "blur(4px)",
+                }}
+              >
+                {showOverlay ? "Text on" : "Text off"}
+              </button>
+            )}
+          </>
         )}
+
+        {/* Concept number badge */}
+        <div
+          className="absolute top-2 left-2 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold text-white"
+          style={{ background: "rgba(0,0,0,0.6)", border: "1px solid rgba(255,255,255,0.15)", backdropFilter: "blur(4px)" }}
+        >
+          {index + 1}
+        </div>
       </div>
 
       {/* Info + actions */}
       <div className="p-4 space-y-3 flex-1">
         <div className="flex items-start justify-between gap-2">
           <div>
-            <p className="text-xs text-white/30 mb-0.5">Concept {index + 1}</p>
             <p className="font-semibold text-sm text-white/90">{item.concept.name}</p>
+            {item.concept.whyItWorks && (
+              <p className="text-xs text-white/35 leading-relaxed mt-1">{item.concept.whyItWorks}</p>
+            )}
           </div>
           {item.concept.colors.length > 0 && (
-            <div className="flex gap-1 mt-1">
+            <div className="flex gap-1 mt-0.5 flex-shrink-0">
               {item.concept.colors.slice(0, 3).map((c) => (
-                <div key={c} className="w-4 h-4 rounded-full border border-white/10 flex-shrink-0" style={{ backgroundColor: c }} title={c} />
+                <div key={c} className="w-4 h-4 rounded-full border border-white/10 flex-shrink-0"
+                  style={{ backgroundColor: c }} title={c} />
               ))}
             </div>
           )}
         </div>
 
-        {item.concept.textOverlay && (
-          <div
-            className="px-3 py-2 rounded-xl text-center"
-            style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.07)" }}
-          >
-            <p className="font-bold text-white/90 text-sm">{item.concept.textOverlay}</p>
-            <p className="text-[10px] text-white/25 mt-0.5 uppercase tracking-widest">Text overlay</p>
-          </div>
-        )}
-
-        {item.concept.whyItWorks && (
-          <p className="text-xs text-white/35 leading-relaxed">{item.concept.whyItWorks}</p>
-        )}
-
         <div className="flex gap-2 pt-1">
           {item.url && (
             <button
               onClick={() => downloadImage(item.url!, item.concept.name)}
-              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-white cursor-pointer transition-all"
+              className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-white cursor-pointer transition-all hover:opacity-90"
               style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 16px rgba(124,58,237,0.25)" }}
             >
               <Download className="h-3.5 w-3.5" />
@@ -157,7 +198,7 @@ function ThumbnailCard({ item, index, onRegenerate }: {
           <button
             onClick={() => onRegenerate(index)}
             disabled={item.loading}
-            className="flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-white/40 hover:text-white/70 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
+            className="flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl text-xs font-medium text-white/40 hover:text-white/70 disabled:opacity-40 disabled:cursor-not-allowed transition-all cursor-pointer"
             style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.08)" }}
           >
             <RefreshCw className={`h-3.5 w-3.5 ${item.loading ? "animate-spin" : ""}`} />
@@ -173,6 +214,7 @@ export default function ThumbnailsPage() {
   const searchParams = useSearchParams();
   const [videoTitle, setVideoTitle] = useState(() => searchParams.get("videoTitle") ?? "");
   const [description, setDescription] = useState(() => searchParams.get("description") ?? "");
+  const [channelStyle, setChannelStyle] = useState("");
   const [style, setStyle] = useState("bold-face");
   const [tone, setTone] = useState("shocking");
 
@@ -206,7 +248,7 @@ export default function ThumbnailsPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         signal: abortRef.current.signal,
-        body: JSON.stringify({ videoTitle, description, style, tone }),
+        body: JSON.stringify({ videoTitle, description, style, tone, channelStyle }),
       });
       if (!res.ok) throw new Error("Failed to generate concepts");
       const reader = res.body!.getReader();
@@ -229,20 +271,27 @@ export default function ThumbnailsPage() {
       return;
     }
 
-    // Step 2: generate images sequentially to avoid rate limits
+    // Step 2: generate all 4 images in parallel
     setPhase("images");
-    const initial: GeneratedImage[] = concepts.map((c) => ({ concept: c, url: null, loading: false, error: null }));
+    const initial: GeneratedImage[] = concepts.map((c) => ({
+      concept: c, url: null, loading: true, error: null,
+    }));
     setImages(initial);
 
-    for (let i = 0; i < concepts.length; i++) {
-      setImages((prev) => prev.map((item, idx) => idx === i ? { ...item, loading: true } : item));
-      try {
-        const url = await generateImage(concepts[i].imagePrompt);
-        setImages((prev) => prev.map((item, idx) => idx === i ? { ...item, url, loading: false } : item));
-      } catch (e: any) {
-        setImages((prev) => prev.map((item, idx) => idx === i ? { ...item, loading: false, error: e.message } : item));
-      }
-    }
+    await Promise.allSettled(
+      concepts.map(async (concept, i) => {
+        try {
+          const url = await generateImage(concept.imagePrompt);
+          setImages((prev) =>
+            prev.map((item, idx) => idx === i ? { ...item, url, loading: false } : item)
+          );
+        } catch (e: any) {
+          setImages((prev) =>
+            prev.map((item, idx) => idx === i ? { ...item, loading: false, error: e.message } : item)
+          );
+        }
+      })
+    );
 
     setPhase("done");
   }
@@ -250,22 +299,32 @@ export default function ThumbnailsPage() {
   async function regenerate(index: number) {
     const concept = images[index]?.concept;
     if (!concept) return;
-    setImages((prev) => prev.map((item, i) => i === index ? { ...item, loading: true, error: null, url: null } : item));
+    setImages((prev) => prev.map((item, i) =>
+      i === index ? { ...item, loading: true, error: null, url: null } : item
+    ));
     try {
       const url = await generateImage(concept.imagePrompt);
-      setImages((prev) => prev.map((item, i) => i === index ? { ...item, url, loading: false } : item));
+      setImages((prev) => prev.map((item, i) =>
+        i === index ? { ...item, url, loading: false } : item
+      ));
     } catch (e: any) {
-      setImages((prev) => prev.map((item, i) => i === index ? { ...item, loading: false, error: e.message } : item));
+      setImages((prev) => prev.map((item, i) =>
+        i === index ? { ...item, loading: false, error: e.message } : item
+      ));
     }
   }
 
   const isRunning = phase === "concepts" || phase === "images";
+  const loadingCount = images.filter((i) => i.loading).length;
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-fade-up">
       <div>
-        <h1 className="text-2xl font-bold">Thumbnail Studio</h1>
-        <p className="text-white/40 mt-1 text-sm">Generate 4 ready-to-download AI thumbnails for your video.</p>
+        <div className="flex items-center gap-2 mb-1">
+          <Sparkles className="h-5 w-5 text-violet-400" />
+          <h1 className="text-2xl font-bold">Thumbnail Studio</h1>
+        </div>
+        <p className="text-white/40 text-sm">Generate 4 AI thumbnails in parallel — with live text overlay preview.</p>
       </div>
 
       {/* Input */}
@@ -275,7 +334,7 @@ export default function ThumbnailsPage() {
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-1.5">
-            <Label>Video title *</Label>
+            <Label>Video title <span className="text-white/25">*</span></Label>
             <Input
               placeholder="e.g. I Survived 30 Days on $1 a Day"
               value={videoTitle}
@@ -284,11 +343,11 @@ export default function ThumbnailsPage() {
             />
           </div>
           <div className="space-y-1.5">
-            <Label>Short description (optional)</Label>
+            <Label>Channel style <span className="text-white/25">(optional)</span></Label>
             <Input
-              placeholder="Brief topic summary for better results"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              placeholder="e.g. MrBeast-style, dark finance, minimalist tech, vlog..."
+              value={channelStyle}
+              onChange={(e) => setChannelStyle(e.target.value)}
             />
           </div>
           <div className="space-y-1.5">
@@ -311,15 +370,27 @@ export default function ThumbnailsPage() {
           </div>
         </div>
 
-        <div className="flex gap-2">
+        <div className="space-y-1.5">
+          <Label>Context <span className="text-white/25">(optional)</span></Label>
+          <Input
+            placeholder="Brief topic summary for better results"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+
+        <div className="flex gap-2 items-center">
           <button
             onClick={run}
             disabled={isRunning || !videoTitle.trim()}
             className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all cursor-pointer"
-            style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: isRunning ? "none" : "0 0 20px rgba(124,58,237,0.3)" }}
+            style={{
+              background: "linear-gradient(135deg,#7c3aed,#6d28d9)",
+              boxShadow: isRunning ? "none" : "0 0 20px rgba(124,58,237,0.3)",
+            }}
           >
             {isRunning ? <Loader2 className="h-4 w-4 animate-spin" /> : <Wand2 className="h-4 w-4" />}
-            {phase === "concepts" ? "Writing concepts…" : phase === "images" ? "Generating images…" : "Generate 4 thumbnails"}
+            {phase === "concepts" ? "Writing concepts…" : phase === "images" ? `Generating (${loadingCount} left)…` : "Generate 4 thumbnails"}
           </button>
           {isRunning && (
             <button
@@ -330,20 +401,15 @@ export default function ThumbnailsPage() {
               Stop
             </button>
           )}
+          {phase === "images" && (
+            <p className="text-xs text-white/30">All 4 generating in parallel</p>
+          )}
         </div>
 
         {error && (
           <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">{error}</p>
         )}
       </div>
-
-      {/* Progress indicator */}
-      {phase === "images" && (
-        <div className="flex items-center gap-3 px-4 py-3 rounded-2xl" style={{ background: "rgba(124,58,237,0.07)", border: "1px solid rgba(124,58,237,0.18)" }}>
-          <Loader2 className="h-4 w-4 animate-spin text-violet-400 flex-shrink-0" />
-          <p className="text-sm text-white/60">Cooking…</p>
-        </div>
-      )}
 
       {/* Thumbnails grid */}
       {images.length > 0 && (
