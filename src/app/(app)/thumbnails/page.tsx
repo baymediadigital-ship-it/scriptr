@@ -83,13 +83,32 @@ async function downloadImage(url: string, name: string) {
   }
 }
 
+/** Returns luminance 0–1 for a hex color */
+function luminance(hex: string): number {
+  const h = hex.replace("#", "").padEnd(6, "0");
+  const r = parseInt(h.slice(0, 2), 16) / 255;
+  const g = parseInt(h.slice(2, 4), 16) / 255;
+  const b = parseInt(h.slice(4, 6), 16) / 255;
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b;
+}
+
+/** Pick the brightest color from the array; fall back to white */
+function pickTextColor(colors: string[]): string {
+  if (!colors.length) return "#ffffff";
+  const valid = colors.filter((c) => /^#[0-9A-Fa-f]{3,6}$/.test(c));
+  if (!valid.length) return "#ffffff";
+  const bright = valid.reduce((best, c) => luminance(c) > luminance(best) ? c : best, valid[0]);
+  // If even the brightest is dark (< 0.25), just use white
+  return luminance(bright) < 0.25 ? "#ffffff" : bright;
+}
+
 function ThumbnailCard({ item, index, onRegenerate }: {
   item: GeneratedImage;
   index: number;
   onRegenerate: (index: number) => void;
 }) {
   const [showOverlay, setShowOverlay] = useState(true);
-  const accentColor = item.concept.colors[0] ?? "#ffffff";
+  const accentColor = pickTextColor(item.concept.colors);
 
   return (
     <div
@@ -127,8 +146,8 @@ function ThumbnailCard({ item, index, onRegenerate }: {
                     style={{
                       fontSize: "clamp(14px, 3.5vw, 22px)",
                       color: accentColor,
-                      textShadow: "0 2px 8px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.8)",
-                      WebkitTextStroke: "0.5px rgba(0,0,0,0.5)",
+                      textShadow: "0 2px 4px rgba(0,0,0,1), 0 4px 16px rgba(0,0,0,0.95), 0 0 32px rgba(0,0,0,0.9)",
+                      WebkitTextStroke: "1px rgba(0,0,0,0.8)",
                       maxWidth: "65%",
                       lineHeight: 1.1,
                     }}
