@@ -108,7 +108,7 @@ function ThumbnailCard({ item, index, onRegenerate }: {
   onRegenerate: (index: number) => void;
 }) {
   const [showOverlay, setShowOverlay] = useState(true);
-  const accentColor = pickTextColor(item.concept.colors);
+  const accentColor = item.concept.colors.find(c => luminance(c) > 0.15) ?? "#ffffff";
 
   return (
     <div
@@ -139,16 +139,19 @@ function ThumbnailCard({ item, index, onRegenerate }: {
             {/* Text overlay on image */}
             {showOverlay && item.concept.textOverlay && (
               <div className="absolute inset-0 flex items-end pointer-events-none"
-                style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 50%)" }}>
-                <div className="p-3 w-full">
+                style={{ background: "linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 45%, transparent 65%)" }}>
+                <div className="p-3 w-full space-y-1">
+                  {/* Accent bar */}
+                  <div className="w-8 h-1 rounded-full" style={{ background: accentColor }} />
                   <p
-                    className="font-black leading-tight uppercase tracking-tight"
+                    className="font-black leading-tight uppercase"
                     style={{
-                      fontSize: "clamp(14px, 3.5vw, 22px)",
-                      color: accentColor,
-                      textShadow: "0 2px 4px rgba(0,0,0,1), 0 4px 16px rgba(0,0,0,0.95), 0 0 32px rgba(0,0,0,0.9)",
-                      WebkitTextStroke: "1px rgba(0,0,0,0.8)",
-                      maxWidth: "65%",
+                      fontSize: "clamp(15px, 3.8vw, 24px)",
+                      color: "#ffffff",
+                      textShadow: "0 1px 3px rgba(0,0,0,1), 0 4px 12px rgba(0,0,0,1)",
+                      WebkitTextStroke: "0.5px rgba(0,0,0,0.6)",
+                      maxWidth: "70%",
+                      letterSpacing: "-0.01em",
                       lineHeight: 1.1,
                     }}
                   >
