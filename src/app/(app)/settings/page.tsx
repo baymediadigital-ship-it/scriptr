@@ -5,6 +5,7 @@ import { PLANS } from "@/lib/stripe/client";
 import { CheckoutButton } from "@/components/billing/checkout-button";
 import { PortalButton } from "@/components/billing/portal-button";
 import { PlanToggle } from "@/components/billing/plan-toggle";
+import { UpgradeSync } from "@/components/billing/upgrade-sync";
 import { VoiceProfile } from "@/components/settings/voice-profile";
 import { TeamMembers } from "@/components/settings/team-members";
 import { Check, Crown, Lock } from "lucide-react";
@@ -29,13 +30,16 @@ export default async function SettingsPage({
       </div>
 
       {upgraded && (
-        <div
-          className="rounded-2xl p-4 flex items-center gap-3"
-          style={{ background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)" }}
-        >
-          <Crown className="h-5 w-5 text-violet-400 flex-shrink-0" />
-          <p className="text-sm text-white/80">You&apos;re now on Pro. All limits removed.</p>
-        </div>
+        <>
+          <UpgradeSync />
+          <div
+            className="rounded-2xl p-4 flex items-center gap-3"
+            style={{ background: "rgba(124,58,237,0.12)", border: "1px solid rgba(124,58,237,0.3)" }}
+          >
+            <Crown className="h-5 w-5 text-violet-400 flex-shrink-0" />
+            <p className="text-sm text-white/80">You&apos;re now on Pro. All limits removed.</p>
+          </div>
+        </>
       )}
 
       {/* Current plan */}
