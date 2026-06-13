@@ -59,6 +59,9 @@ function WaitlistForm({ source, size = "default" }: { source: string; size?: "de
       } else {
         setStatus("success");
         setMsg(data.alreadyJoined ? "You're already on the list! We'll be in touch." : "You're on the list! We'll email you when we open access.");
+        if (typeof window !== "undefined" && (window as any).fbq) {
+          (window as any).fbq("track", "Lead");
+        }
       }
     } catch {
       setStatus("error");
