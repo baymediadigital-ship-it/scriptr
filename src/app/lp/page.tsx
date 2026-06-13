@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, Check, CheckCircle2, Zap, Star, Clock, TrendingDown, Lightbulb } from "lucide-react";
 import { ScriptrMark } from "@/components/ui/logo";
 import { PriceIncreaseBanner } from "@/components/landing/price-increase-banner";
+import { PixelCTA } from "@/components/landing/pixel-cta";
 
 export const metadata = {
   title: "Scriptr — Write Your Next YouTube Script in 60 Seconds",
@@ -56,13 +57,7 @@ export default function LandingPageAd() {
             <ScriptrMark size={28} />
             <span className="font-bold text-white text-sm tracking-tight">Scriptr</span>
           </div>
-          <Link
-            href="/auth/signup"
-            className="text-sm font-semibold text-white px-4 py-2.5 min-h-[44px] flex items-center rounded-xl transition-all hover:opacity-90"
-            style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 20px rgba(124,58,237,0.35)" }}
-          >
-            Start $5 trial
-          </Link>
+          <PixelCTA variant="hero">Start $5 trial</PixelCTA>
         </nav>
       </div>
 
@@ -105,14 +100,7 @@ export default function LandingPageAd() {
             </p>
 
             <div className="pt-2 space-y-3">
-              <Link
-                href="/auth/signup"
-                className="inline-flex items-center gap-2 px-8 py-4 min-h-[52px] rounded-xl text-base font-bold text-white transition-all hover:opacity-90"
-                style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 32px rgba(124,58,237,0.45)" }}
-              >
-                Start your 7-day trial for $5
-                <ArrowRight className="h-5 w-5" aria-hidden="true" />
-              </Link>
+              <PixelCTA variant="footer">Start your 7-day trial for $5</PixelCTA>
               <p className="text-xs text-white/25">Cancel in the first 7 days — pay nothing more. No contracts.</p>
             </div>
 
@@ -225,13 +213,7 @@ export default function LandingPageAd() {
                   </div>
                   <p className="text-xs text-white/25">7-day trial for $5 — cancel anytime</p>
                 </div>
-                <Link
-                  href="/auth/signup"
-                  className="block w-full py-3 min-h-[44px] rounded-xl text-sm font-semibold text-white/70 text-center transition-all hover:text-white hover:border-white/20"
-                  style={{ background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.1)" }}
-                >
-                  Start $5 trial →
-                </Link>
+                <PixelCTA variant="pricing">Start $5 trial →</PixelCTA>
               </div>
 
               {/* Annual — highlighted */}
@@ -251,13 +233,7 @@ export default function LandingPageAd() {
                   </div>
                   <p className="text-xs text-emerald-400 font-semibold">Save $99/year · Free strategy call included</p>
                 </div>
-                <Link
-                  href="/auth/signup"
-                  className="block w-full py-3 min-h-[44px] rounded-xl text-sm font-bold text-white text-center transition-all hover:opacity-90"
-                  style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 20px rgba(124,58,237,0.4)" }}
-                >
-                  Start $5 trial →
-                </Link>
+                <PixelCTA variant="pricing">Start $5 trial →</PixelCTA>
               </div>
             </div>
 
@@ -307,14 +283,7 @@ export default function LandingPageAd() {
             <h2 className="text-3xl font-bold" style={{ letterSpacing: "-0.03em" }}>
               Your next video is already proven.<br />You just need to script it.
             </h2>
-            <Link
-              href="/auth/signup"
-              className="inline-flex items-center gap-2 px-8 py-4 min-h-[52px] rounded-xl text-base font-bold text-white transition-all hover:opacity-90"
-              style={{ background: "linear-gradient(135deg,#7c3aed,#6d28d9)", boxShadow: "0 0 32px rgba(124,58,237,0.45)" }}
-            >
-              Start your 7-day trial for $5
-              <ArrowRight className="h-5 w-5" aria-hidden="true" />
-            </Link>
+            <PixelCTA variant="footer">Start your 7-day trial for $5</PixelCTA>
             <p className="text-xs text-white/25">No contracts. Cancel anytime. Secure payment via Stripe.</p>
           </div>
         </section>
